@@ -175,12 +175,12 @@ echo 'hello, world' >> test2.txt
 
 
 3. Using your favorite text editor (e.g., `vi`), type the following and save the file as `middle.sh`:
-    ```{bash eval=FALSE}
-    #!/bin/sh
-    # Select lines from the middle of a file.
-    # Usage: bash middle.sh filename end_line num_lines
-    head -n "$2" "$1" | tail -n "$3"
-    ```
+```{bash eval=FALSE}
+#!/bin/sh
+# Select lines from the middle of a file.
+# Usage: bash middle.sh filename end_line num_lines
+head -n "$2" "$1" | tail -n "$3"
+```
 Using `chmod` make the file executable by the owner, and run 
 ```{bash}
 chmod 700 ./middle.sh

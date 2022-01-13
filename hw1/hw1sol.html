@@ -358,13 +358,13 @@ done</code></pre>
 <pre class="bash"><code>echo &#39;hello, world&#39; &gt;&gt; test2.txt</code></pre>
 <p><strong><em>The difference is that <code>&gt;</code> overwrite the file content with <code>hello, world</code> while <code>&gt;&gt;</code> append the <code>hello, world</code> to the file.</em></strong></p>
 <ol start="3" style="list-style-type: decimal">
-<li><p>Using your favorite text editor (e.g., <code>vi</code>), type the following and save the file as <code>middle.sh</code>:</p>
+<li>Using your favorite text editor (e.g., <code>vi</code>), type the following and save the file as <code>middle.sh</code>:</li>
+</ol>
 <pre class="bash"><code>#!/bin/sh
 # Select lines from the middle of a file.
 # Usage: bash middle.sh filename end_line num_lines
 head -n &quot;$2&quot; &quot;$1&quot; | tail -n &quot;$3&quot;</code></pre>
-<p>Using <code>chmod</code> make the file executable by the owner, and run</p></li>
-</ol>
+<p>Using <code>chmod</code> make the file executable by the owner, and run</p>
 <pre class="bash"><code>chmod 700 ./middle.sh
 ./middle.sh pg42671.txt 20 5</code></pre>
 <pre><code>## 
@@ -434,7 +434,7 @@ cal 9 1752</code></pre>
 ## 24 25 26 27 28 29 30</code></pre>
 <p><strong><em><code>cal</code> is a calendar command in Linux which is used to see the calendar of a specific month or a whole year. <code>cal 2021</code> displays the calendar of year 2021. <code>cal 9 1752</code> displays the calendar of September year 1752, and we can see that some days are missing. The Gregorian calendar reform was adopted by the Kingdom of Great Britain, including its possessions in North America (later to become eastern USA and Canada), in September 1752. As a result, the September 1752 cal shows the adjusted days missing. This month was the official (British) adoption of the Gregorian calendar from the previously used Julian calendar. This has been documented in the man pages for Sun Solaris as follows. “An unusual calendar is printed for September 1752. That is the month when 11 days were skipped to make up for lack of leap year adjustments.”</em></strong></p>
 <pre class="bash"><code>date</code></pre>
-<pre><code>## Thu Jan 13 22:29:14 UTC 2022</code></pre>
+<pre><code>## Thu Jan 13 23:02:30 UTC 2022</code></pre>
 <p><strong><em><code>date</code> command is used to display the system date and time.</em></strong></p>
 <pre class="bash"><code>hostname</code></pre>
 <pre><code>## biostat-203b-teaching-server</code></pre>
@@ -446,7 +446,7 @@ cal 9 1752</code></pre>
 <pre><code>## Linux biostat-203b-teaching-server 3.10.0-1160.49.1.el7.x86_64 #1 SMP Tue Nov 30 15:51:32 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux</code></pre>
 <p><strong><em><code>uname -a</code> command prints all the information, including the name, version and other details about the current machine and the operating system running on it. <code>-a</code> is the abbreviation of <code>all</code>.</em></strong></p>
 <pre class="bash"><code>uptime</code></pre>
-<pre><code>##  22:29:14 up 10 days, 22:02,  3 users,  load average: 0.32, 0.17, 0.13</code></pre>
+<pre><code>##  23:02:30 up 10 days, 22:36,  4 users,  load average: 0.38, 0.22, 0.17</code></pre>
 <p><strong><em><code>uptime</code> is a command that returns information about how long your system has been running together with the current time, number of users with running sessions, and the system load averages for the past 1, 5, and 15 minutes. It can also filter the information displayed at once depending on your specified options.</em></strong></p>
 <pre class="bash"><code>whoami</code></pre>
 <pre><code>## yuhang886688</code></pre>
@@ -454,29 +454,31 @@ cal 9 1752</code></pre>
 <pre class="bash"><code>who</code></pre>
 <pre><code>## tomokiokuno0528 pts/1        2022-01-11 01:13 (42.166.94.34.bc.googleusercontent.com)
 ## tomokiokuno0528 pts/3        2022-01-10 23:43 (42.166.94.34.bc.googleusercontent.com)
-## maschepps pts/7        2022-01-13 20:11 (74.213.228.243)</code></pre>
+## maschepps pts/7        2022-01-13 20:11 (74.213.228.243)
+## seamusgallivan pts/12       2022-01-13 22:57 (c-73-63-234-195.hsd1.ca.comcast.net)</code></pre>
 <p><strong><em><code>who</code> is used to get information about currently logged in user on to system.</em></strong></p>
 <pre class="bash"><code>w</code></pre>
-<pre><code>##  22:29:14 up 10 days, 22:02,  3 users,  load average: 0.32, 0.17, 0.13
+<pre><code>##  23:02:30 up 10 days, 22:36,  4 users,  load average: 0.38, 0.22, 0.17
 ## USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
 ## tomokiok pts/1    42.166.94.34.bc. Tue01    2days  0.01s  0.01s -bash
 ## tomokiok pts/3    42.166.94.34.bc. Mon23    2days  0.46s  0.28s ssh -i /home/tomokiokuno0528/.ssh/id_rsa tomokiokuno0528@server.ucla-biostat-203b.com
-## maschepp pts/7    74.213.228.243   20:11    2:17m  0.02s  0.02s -bash</code></pre>
+## maschepp pts/7    74.213.228.243   20:11    2:50m  0.02s  0.02s -bash
+## seamusga pts/12   c-73-63-234-195. 22:57    3:42   0.01s  0.01s -bash</code></pre>
 <p><strong><em><code>w</code> is used to show who is logged on and what they are doing.</em></strong></p>
 <pre class="bash"><code>id</code></pre>
 <pre><code>## uid=1027(yuhang886688) gid=1029(yuhang886688) groups=1029(yuhang886688) context=system_u:system_r:initrc_t:s0</code></pre>
 <p><strong><em><code>id</code> is used to find out user and group names and numeric ID’s (UID or group ID) of the current user or any other user in the server.</em></strong></p>
 <pre class="bash"><code>last | head</code></pre>
-<pre><code>## sharonfe pts/2        38.15.211.52     Thu Jan 13 21:53 - 22:16  (00:23)    
+<pre><code>## seamusga pts/12       c-73-63-234-195. Thu Jan 13 22:57   still logged in   
+## seamusga pts/12       c-73-63-234-195. Thu Jan 13 22:54 - 22:55  (00:00)    
+## seamusga pts/14       c-73-63-234-195. Thu Jan 13 22:32 - 22:45  (00:12)    
+## sharonfe pts/2        38.15.211.52     Thu Jan 13 21:53 - 22:16  (00:23)    
 ## capj245  pts/10       s-164-67-232-61. Thu Jan 13 21:32 - 21:32  (00:00)    
 ## capj245  pts/10       s-164-67-232-61. Thu Jan 13 21:28 - 21:29  (00:01)    
 ## maschepp pts/7        74.213.228.243   Thu Jan 13 20:11   still logged in   
 ## lillyhua pts/0        108.53.250.47    Thu Jan 13 07:39 - 07:40  (00:01)    
 ## lillyhua pts/0        108.53.250.47    Thu Jan 13 07:37 - 07:37  (00:00)    
-## jiahaoti pts/8        104-54-32-28.lig Thu Jan 13 07:27 - 08:05  (00:37)    
-## lillyhua pts/10       108.53.250.47    Thu Jan 13 07:26 - 07:29  (00:03)    
-## lillyhua pts/13       108.53.250.47    Thu Jan 13 07:19 - 07:20  (00:01)    
-## jiahaoti pts/10       104-54-32-28.lig Thu Jan 13 07:18 - 07:22  (00:03)</code></pre>
+## jiahaoti pts/8        104-54-32-28.lig Thu Jan 13 07:27 - 08:05  (00:37)</code></pre>
 <p><strong><em><code>last | head</code> displays the first 10 lines of the list that displays information about the last login sessions of the system users.</em></strong></p>
 <pre class="bash"><code>echo {con,pre}{sent,fer}{s,ed}</code></pre>
 <pre><code>## consents consented confers confered presents presented prefers prefered</code></pre>
@@ -484,8 +486,8 @@ cal 9 1752</code></pre>
 <pre class="bash"><code>time sleep 5</code></pre>
 <pre><code>## 
 ## real 0m5.001s
-## user 0m0.001s
-## sys  0m0.000s</code></pre>
+## user 0m0.000s
+## sys  0m0.001s</code></pre>
 <p><strong><em><code>time sleep 5</code> delays for 5 seconds during the execution of any scrip.</em></strong></p>
 <pre class="bash"><code>history | tail</code></pre>
 <p><strong><em><code>history | tail</code> shows us history of the last 10 commands which were typed in terminal.</em></strong></p>
