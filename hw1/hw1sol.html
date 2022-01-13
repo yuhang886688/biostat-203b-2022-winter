@@ -193,7 +193,8 @@ pre code {
 <div id="q3.-linux-shell-commands" class="section level2">
 <h2>Q3. Linux Shell Commands</h2>
 <ol style="list-style-type: decimal">
-<li><p>The <code>/mnt/mimiciv/1.0</code> folder on teaching server contains data sets from MIMIC-IV. Refer to the documentation <a href="https://mimic.mit.edu/docs/iv/" class="uri">https://mimic.mit.edu/docs/iv/</a> for details of data files.</p>
+<li>The <code>/mnt/mimiciv/1.0</code> folder on teaching server contains data sets from MIMIC-IV. Refer to the documentation <a href="https://mimic.mit.edu/docs/iv/" class="uri">https://mimic.mit.edu/docs/iv/</a> for details of data files.</li>
+</ol>
 <pre class="bash"><code>ls -l /mnt/mimiciv/1.0</code></pre>
 <pre><code>## total 24
 ## drwxr-xr-x. 2 root root 4096 Jan  4 21:48 core
@@ -203,8 +204,10 @@ pre code {
 ## -rw-r--r--. 1 root root 2518 Jan  4 21:54 LICENSE.txt
 ## -rw-r--r--. 1 root root 2459 Jan  4 21:48 SHA256SUMS.txt</code></pre>
 <p>Please, do <strong>not</strong> put these data files into Git; they are big. Do <strong>not</strong> copy them into your directory. Do <strong>not</strong> decompress the gz data files. These create unnecessary big files on storage and are not big data friendly practices. Just read from the data folder <code>/mnt/mimiciv/1.0</code> directly in following exercises.</p>
-<p>Use Bash commands to answer following questions.</p></li>
-<li><p>Display the contents in the folders <code>core</code>, <code>hosp</code>, <code>icu</code>.</p>
+<pre><code>Use Bash commands to answer following questions.</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Display the contents in the folders <code>core</code>, <code>hosp</code>, <code>icu</code>.</li>
+</ol>
 <pre class="bash"><code>ls -l /mnt/mimiciv/1.0/core/
 ls -l /mnt/mimiciv/1.0/hosp/
 ls -l /mnt/mimiciv/1.0/icu/</code></pre>
@@ -240,8 +243,7 @@ ls -l /mnt/mimiciv/1.0/icu/</code></pre>
 ## -rw-r--r--. 1 root root       1103 Jan  4 21:52 index.html
 ## -rw-r--r--. 1 root root  352443512 Jan  4 21:52 inputevents.csv.gz
 ## -rw-r--r--. 1 root root   37095672 Jan  4 21:52 outputevents.csv.gz
-## -rw-r--r--. 1 root root   20567368 Jan  4 21:52 procedureevents.csv.gz</code></pre></li>
-</ol>
+## -rw-r--r--. 1 root root   20567368 Jan  4 21:52 procedureevents.csv.gz</code></pre>
 <p>Why are these data files distributed as <code>.csv.gz</code> files instead of <code>.csv</code> (comma separated values) files? Read the page <a href="https://mimic.mit.edu/docs/iv/" class="uri">https://mimic.mit.edu/docs/iv/</a> to understand what’s in each folder.</p>
 <p><strong><em>CSV.GZ is a CSV file compressed with gzip utility. Using compressed files can help us process more efficiently. It does not cost too much memory, and it enables us to better know the structures of the files.</em></strong></p>
 <ol start="3" style="list-style-type: decimal">
@@ -252,57 +254,40 @@ ls -l /mnt/mimiciv/1.0/icu/</code></pre>
 <p><strong><em><code>zgrep</code> lets you search the contents of a compressed file without extracting the contents first.</em></strong></p>
 <p><strong><em>The <code>zcat</code>, <code>zless</code>, and <code>zmore</code> commands work the same way as <code>cat</code>, <code>less</code>, and <code>more</code>.</em></strong></p>
 <ol start="4" style="list-style-type: decimal">
-<li><p>What’s the output of following bash script?</p>
+<li>What’s the output of following bash script?</li>
+</ol>
 <pre class="bash"><code>for datafile in /mnt/mimiciv/1.0/core/*.gz
   do
     ls -l $datafile
   done</code></pre>
-<pre><code>## -rw-r--r--. 1 root root 17208966 Jan  4 21:48 /mnt/mimiciv/1.0/core/admissions.csv.gz
-## -rw-r--r--. 1 root root 2955582 Jan  4 21:48 /mnt/mimiciv/1.0/core/patients.csv.gz
-## -rw-r--r--. 1 root root 53014503 Jan  4 21:48 /mnt/mimiciv/1.0/core/transfers.csv.gz</code></pre></li>
-</ol>
 <p><strong><em>The output of the bash script is the list of all gz (compressed) files in the <code>core</code> folder in a long listing format.</em></strong></p>
 <p>Display the number of lines in each data file using a similar loop.</p>
-<pre><code>```bash
-for datafile in /mnt/mimiciv/1.0/core/*.gz
+<pre class="bash"><code>for datafile in /mnt/mimiciv/1.0/core/*.gz
   do
     wc -l $datafile
-  done
-```
-
-```
-## 66155 /mnt/mimiciv/1.0/core/admissions.csv.gz
+  done</code></pre>
+<pre><code>## 66155 /mnt/mimiciv/1.0/core/admissions.csv.gz
 ## 8712 /mnt/mimiciv/1.0/core/patients.csv.gz
-## 197787 /mnt/mimiciv/1.0/core/transfers.csv.gz
-```</code></pre>
+## 197787 /mnt/mimiciv/1.0/core/transfers.csv.gz</code></pre>
 <ol start="5" style="list-style-type: decimal">
-<li><p>Display the first few lines of <code>admissions.csv.gz</code>.</p>
+<li>Display the first few lines of <code>admissions.csv.gz</code>.</li>
+</ol>
 <pre class="bash"><code>zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | head -5</code></pre>
 <pre><code>## subject_id,hadm_id,admittime,dischtime,deathtime,admission_type,admission_location,discharge_location,insurance,language,marital_status,ethnicity,edregtime,edouttime,hospital_expire_flag
 ## 14679932,21038362,2139-09-26 14:16:00,2139-09-28 11:30:00,,ELECTIVE,,HOME,Other,ENGLISH,SINGLE,UNKNOWN,,,0
 ## 15585972,24941086,2123-10-07 23:56:00,2123-10-12 11:22:00,,ELECTIVE,,HOME,Other,ENGLISH,,WHITE,,,0
 ## 11989120,21965160,2147-01-14 09:00:00,2147-01-17 14:25:00,,ELECTIVE,,HOME,Other,ENGLISH,,UNKNOWN,,,0
-## 17817079,24709883,2165-12-27 17:33:00,2165-12-31 21:18:00,,ELECTIVE,,HOME,Other,ENGLISH,,OTHER,,,0</code></pre></li>
-</ol>
+## 17817079,24709883,2165-12-27 17:33:00,2165-12-31 21:18:00,,ELECTIVE,,HOME,Other,ENGLISH,,OTHER,,,0</code></pre>
 <p>How many rows are in this data file?</p>
-<pre><code>```bash
-zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | wc -l
-```
-
-```
-## 523741
-```</code></pre>
+<pre class="bash"><code>zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | wc -l</code></pre>
+<pre><code>## 523741</code></pre>
 <p>How many unique patients (identified by <code>subject_id</code>) are in this data file? (Hint: combine Linux commands <code>zcat</code>, <code>head</code>/<code>tail</code>, <code>awk</code>, <code>sort</code>, <code>uniq</code>, <code>wc</code>, and so on.)</p>
-<pre><code>```bash
-zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | sort -u -t, -k1,1 | wc -l
-#zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | awk -F&quot;,&quot; &#39;!_[$1]++&#39; | wc -l
-```
-
-```
-## 256879
-```</code></pre>
+<pre class="bash"><code>zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | sort -u -t, -k1,1 | wc -l
+#zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | awk -F&quot;,&quot; &#39;!_[$1]++&#39; | wc -l</code></pre>
+<pre><code>## 256879</code></pre>
 <ol start="6" style="list-style-type: decimal">
-<li><p>What are the possible values taken by each of the variable <code>admission_type</code>, <code>admission_location</code>, <code>insurance</code>, and <code>ethnicity</code>? Also report the count for each unique value of these variables. (Hint: combine Linux commands <code>zcat</code>, <code>head</code>/<code>tail</code>, <code>awk</code>, <code>uniq -c</code>, <code>wc</code>, and so on.)</p>
+<li>What are the possible values taken by each of the variable <code>admission_type</code>, <code>admission_location</code>, <code>insurance</code>, and <code>ethnicity</code>? Also report the count for each unique value of these variables. (Hint: combine Linux commands <code>zcat</code>, <code>head</code>/<code>tail</code>, <code>awk</code>, <code>uniq -c</code>, <code>wc</code>, and so on.)</li>
+</ol>
 <pre class="bash"><code>zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | awk -F &#39;,&#39; &#39;NR&gt;1 {print $6}&#39; | sort | uniq -c</code></pre>
 <pre><code>##    7254 AMBULATORY OBSERVATION
 ##   21581 DIRECT EMER.
@@ -338,32 +323,39 @@ zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | sort -u -t, -k1,1 | wc -l
 ##   26813 OTHER
 ##    3740 UNABLE TO OBTAIN
 ##   19400 UNKNOWN
-##  337630 WHITE</code></pre></li>
-</ol>
+##  337630 WHITE</code></pre>
 </div>
 <div id="q4.-whos-popular-in-price-and-prejudice" class="section level2">
 <h2>Q4. Who’s popular in Price and Prejudice</h2>
 <ol style="list-style-type: decimal">
-<li><p>You and your friend just have finished reading <em>Pride and Prejudice</em> by Jane Austen. Among the four main characters in the book, Elizabeth, Jane, Lydia, and Darcy, your friend thinks that Darcy was the most mentioned. You, however, are certain it was Elizabeth. Obtain the full text of the novel from <a href="http://www.gutenberg.org/cache/epub/42671/pg42671.txt" class="uri">http://www.gutenberg.org/cache/epub/42671/pg42671.txt</a> and save to your local folder.</p>
-<pre class="bash"><code>wget -nc http://www.gutenberg.org/cache/epub/42671/pg42671.txt</code></pre>
-<p>Explain what <code>wget -nc</code> does.</p></li>
+<li>You and your friend just have finished reading <em>Pride and Prejudice</em> by Jane Austen. Among the four main characters in the book, Elizabeth, Jane, Lydia, and Darcy, your friend thinks that Darcy was the most mentioned. You, however, are certain it was Elizabeth. Obtain the full text of the novel from <a href="http://www.gutenberg.org/cache/epub/42671/pg42671.txt" class="uri">http://www.gutenberg.org/cache/epub/42671/pg42671.txt</a> and save to your local folder.</li>
 </ol>
+<pre class="bash"><code>wget -nc http://www.gutenberg.org/cache/epub/42671/pg42671.txt</code></pre>
+<p>Explain what <code>wget -nc</code> does.</p>
 <p><strong><em><code>wget</code> is a command-line utility for downloading files from the web, and <code>-nc</code> indicates the file will not be retrieved if the file is already downloaded. If we delete <code>-nc</code>, the command will retrieve as another file with the same content.</em></strong></p>
 <p>Do <strong>not</strong> put this text file <code>pg42671.txt</code> in Git. Complete the following loop to tabulate the number of times each of the four characters is mentioned using Linux commands.</p>
-<pre><code>```bash
-wget -nc http://www.gutenberg.org/cache/epub/42671/pg42671.txt
+<pre class="bash"><code>wget -nc http://www.gutenberg.org/cache/epub/42671/pg42671.txt
 for char in Elizabeth Jane Lydia Darcy
 do
   echo $char:
   cat pg42671.txt | grep -o -i $char | wc -l
-done
-```</code></pre>
+done</code></pre>
+<pre><code>## File ‘pg42671.txt’ already there; not retrieving.
+## 
+## Elizabeth:
+## 634
+## Jane:
+## 294
+## Lydia:
+## 171
+## Darcy:
+## 418</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li><p>What’s the difference between the following two commands?</p>
+<li>What’s the difference between the following two commands?</li>
+</ol>
 <pre class="bash"><code>echo &#39;hello, world&#39; &gt; test1.txt</code></pre>
 <p>and</p>
-<pre class="bash"><code>echo &#39;hello, world&#39; &gt;&gt; test2.txt</code></pre></li>
-</ol>
+<pre class="bash"><code>echo &#39;hello, world&#39; &gt;&gt; test2.txt</code></pre>
 <p><strong><em>The difference is that <code>&gt;</code> overwrite the file content with <code>hello, world</code> while <code>&gt;&gt;</code> append the <code>hello, world</code> to the file.</em></strong></p>
 <ol start="3" style="list-style-type: decimal">
 <li><p>Using your favorite text editor (e.g., <code>vi</code>), type the following and save the file as <code>middle.sh</code>:</p>
@@ -371,13 +363,132 @@ done
 # Select lines from the middle of a file.
 # Usage: bash middle.sh filename end_line num_lines
 head -n &quot;$2&quot; &quot;$1&quot; | tail -n &quot;$3&quot;</code></pre>
-<p>Using <code>chmod</code> make the file executable by the owner, and run</p>
-<pre class="bash"><code>./middle.sh pg42671.txt 20 5</code></pre>
-<p>Explain the output. Explain the meaning of <code>&quot;$1&quot;</code>, <code>&quot;$2&quot;</code>, and <code>&quot;$3&quot;</code> in this shell script. Why do we need the first line of the shell script?</p></li>
+<p>Using <code>chmod</code> make the file executable by the owner, and run</p></li>
 </ol>
+<pre class="bash"><code>chmod 700 ./middle.sh
+./middle.sh pg42671.txt 20 5</code></pre>
+<pre><code>## 
+## Author: Jane Austen
+## 
+## Editor: R. W. (Robert William) Chapman
+## </code></pre>
+<p>Explain the output.</p>
+<p><strong><em>The output selects the text content from line 16 to line 20. It prints the first 20 lines of the text and then prints the last 5 lines from the selected 20 lines.</em></strong></p>
+<p>Explain the meaning of <code>&quot;$1&quot;</code>, <code>&quot;$2&quot;</code>, and <code>&quot;$3&quot;</code> in this shell script.</p>
+<p><strong><em><code>&quot;$1&quot;</code>, <code>&quot;$2&quot;</code>, and <code>&quot;$3&quot;</code> are positional arguments. <code>&quot;$1&quot;</code> is the first command-line argument supplied when the script is run, <code>&quot;$2&quot;</code> is the second argument, and the <code>&quot;$3&quot;</code> is the third, etc.</em></strong></p>
+<p>Why do we need the first line of the shell script?</p>
+<p><strong><em>The first line tells the shell that if you execute the script directly, it should use that program (/bin/sh in this case) to interpret it. It tells that the file is to be executed by /bin/bash.</em></strong></p>
 <div id="q5.-more-fun-with-linux" class="section level3">
 <h3>Q5. More fun with Linux</h3>
 <p>Try following commands in Bash and interpret the results: <code>cal</code>, <code>cal 2021</code>, <code>cal 9 1752</code> (anything unusual?), <code>date</code>, <code>hostname</code>, <code>arch</code>, <code>uname -a</code>, <code>uptime</code>, <code>who am i</code>, <code>who</code>, <code>w</code>, <code>id</code>, <code>last | head</code>, <code>echo {con,pre}{sent,fer}{s,ed}</code>, <code>time sleep 5</code>, <code>history | tail</code>.</p>
+<pre class="bash"><code>cal
+cal 2021
+cal 9 1752</code></pre>
+<pre><code>##     January 2022    
+## Su Mo Tu We Th Fr Sa
+##                    1
+##  2  3  4  5  6  7  8
+##  9 10 11 12 13 14 15
+## 16 17 18 19 20 21 22
+## 23 24 25 26 27 28 29
+## 30 31
+##                                2021                               
+## 
+##        January               February                 March       
+## Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa
+##                 1  2       1  2  3  4  5  6       1  2  3  4  5  6
+##  3  4  5  6  7  8  9    7  8  9 10 11 12 13    7  8  9 10 11 12 13
+## 10 11 12 13 14 15 16   14 15 16 17 18 19 20   14 15 16 17 18 19 20
+## 17 18 19 20 21 22 23   21 22 23 24 25 26 27   21 22 23 24 25 26 27
+## 24 25 26 27 28 29 30   28                     28 29 30 31
+## 31
+##         April                   May                   June        
+## Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa
+##              1  2  3                      1          1  2  3  4  5
+##  4  5  6  7  8  9 10    2  3  4  5  6  7  8    6  7  8  9 10 11 12
+## 11 12 13 14 15 16 17    9 10 11 12 13 14 15   13 14 15 16 17 18 19
+## 18 19 20 21 22 23 24   16 17 18 19 20 21 22   20 21 22 23 24 25 26
+## 25 26 27 28 29 30      23 24 25 26 27 28 29   27 28 29 30
+##                        30 31
+##         July                  August                September     
+## Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa
+##              1  2  3    1  2  3  4  5  6  7             1  2  3  4
+##  4  5  6  7  8  9 10    8  9 10 11 12 13 14    5  6  7  8  9 10 11
+## 11 12 13 14 15 16 17   15 16 17 18 19 20 21   12 13 14 15 16 17 18
+## 18 19 20 21 22 23 24   22 23 24 25 26 27 28   19 20 21 22 23 24 25
+## 25 26 27 28 29 30 31   29 30 31               26 27 28 29 30
+## 
+##        October               November               December      
+## Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa
+##                 1  2       1  2  3  4  5  6             1  2  3  4
+##  3  4  5  6  7  8  9    7  8  9 10 11 12 13    5  6  7  8  9 10 11
+## 10 11 12 13 14 15 16   14 15 16 17 18 19 20   12 13 14 15 16 17 18
+## 17 18 19 20 21 22 23   21 22 23 24 25 26 27   19 20 21 22 23 24 25
+## 24 25 26 27 28 29 30   28 29 30               26 27 28 29 30 31
+## 31
+## 
+##    September 1752   
+## Su Mo Tu We Th Fr Sa
+##        1  2 14 15 16
+## 17 18 19 20 21 22 23
+## 24 25 26 27 28 29 30</code></pre>
+<p><strong><em><code>cal</code> is a calendar command in Linux which is used to see the calendar of a specific month or a whole year. <code>cal 2021</code> displays the calendar of year 2021. <code>cal 9 1752</code> displays the calendar of September year 1752, and we can see that some days are missing. The Gregorian calendar reform was adopted by the Kingdom of Great Britain, including its possessions in North America (later to become eastern USA and Canada), in September 1752. As a result, the September 1752 cal shows the adjusted days missing. This month was the official (British) adoption of the Gregorian calendar from the previously used Julian calendar. This has been documented in the man pages for Sun Solaris as follows. “An unusual calendar is printed for September 1752. That is the month when 11 days were skipped to make up for lack of leap year adjustments.”</em></strong></p>
+<pre class="bash"><code>date</code></pre>
+<pre><code>## Thu Jan 13 22:29:14 UTC 2022</code></pre>
+<p><strong><em><code>date</code> command is used to display the system date and time.</em></strong></p>
+<pre class="bash"><code>hostname</code></pre>
+<pre><code>## biostat-203b-teaching-server</code></pre>
+<p><strong><em><code>hostname</code> command is used to obtain the DNS(Domain Name System) name and set the system’s hostname or NIS(Network Information System) domain name. Here the hostname would be the name of the teaching server.</em></strong></p>
+<pre class="bash"><code>arch</code></pre>
+<pre><code>## x86_64</code></pre>
+<p><strong><em><code>arch</code> command is used to print the computer architecture. Here the computer architecture is x86_64.</em></strong></p>
+<pre class="bash"><code>uname -a</code></pre>
+<pre><code>## Linux biostat-203b-teaching-server 3.10.0-1160.49.1.el7.x86_64 #1 SMP Tue Nov 30 15:51:32 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux</code></pre>
+<p><strong><em><code>uname -a</code> command prints all the information, including the name, version and other details about the current machine and the operating system running on it. <code>-a</code> is the abbreviation of <code>all</code>.</em></strong></p>
+<pre class="bash"><code>uptime</code></pre>
+<pre><code>##  22:29:14 up 10 days, 22:02,  3 users,  load average: 0.32, 0.17, 0.13</code></pre>
+<p><strong><em><code>uptime</code> is a command that returns information about how long your system has been running together with the current time, number of users with running sessions, and the system load averages for the past 1, 5, and 15 minutes. It can also filter the information displayed at once depending on your specified options.</em></strong></p>
+<pre class="bash"><code>whoami</code></pre>
+<pre><code>## yuhang886688</code></pre>
+<p><strong><em><code>whoami</code>command displays the username of the current user when this command is invoked. Here the username is <code>yuhang886688</code>, which is myself.</em></strong></p>
+<pre class="bash"><code>who</code></pre>
+<pre><code>## tomokiokuno0528 pts/1        2022-01-11 01:13 (42.166.94.34.bc.googleusercontent.com)
+## tomokiokuno0528 pts/3        2022-01-10 23:43 (42.166.94.34.bc.googleusercontent.com)
+## maschepps pts/7        2022-01-13 20:11 (74.213.228.243)</code></pre>
+<p><strong><em><code>who</code> is used to get information about currently logged in user on to system.</em></strong></p>
+<pre class="bash"><code>w</code></pre>
+<pre><code>##  22:29:14 up 10 days, 22:02,  3 users,  load average: 0.32, 0.17, 0.13
+## USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+## tomokiok pts/1    42.166.94.34.bc. Tue01    2days  0.01s  0.01s -bash
+## tomokiok pts/3    42.166.94.34.bc. Mon23    2days  0.46s  0.28s ssh -i /home/tomokiokuno0528/.ssh/id_rsa tomokiokuno0528@server.ucla-biostat-203b.com
+## maschepp pts/7    74.213.228.243   20:11    2:17m  0.02s  0.02s -bash</code></pre>
+<p><strong><em><code>w</code> is used to show who is logged on and what they are doing.</em></strong></p>
+<pre class="bash"><code>id</code></pre>
+<pre><code>## uid=1027(yuhang886688) gid=1029(yuhang886688) groups=1029(yuhang886688) context=system_u:system_r:initrc_t:s0</code></pre>
+<p><strong><em><code>id</code> is used to find out user and group names and numeric ID’s (UID or group ID) of the current user or any other user in the server.</em></strong></p>
+<pre class="bash"><code>last | head</code></pre>
+<pre><code>## sharonfe pts/2        38.15.211.52     Thu Jan 13 21:53 - 22:16  (00:23)    
+## capj245  pts/10       s-164-67-232-61. Thu Jan 13 21:32 - 21:32  (00:00)    
+## capj245  pts/10       s-164-67-232-61. Thu Jan 13 21:28 - 21:29  (00:01)    
+## maschepp pts/7        74.213.228.243   Thu Jan 13 20:11   still logged in   
+## lillyhua pts/0        108.53.250.47    Thu Jan 13 07:39 - 07:40  (00:01)    
+## lillyhua pts/0        108.53.250.47    Thu Jan 13 07:37 - 07:37  (00:00)    
+## jiahaoti pts/8        104-54-32-28.lig Thu Jan 13 07:27 - 08:05  (00:37)    
+## lillyhua pts/10       108.53.250.47    Thu Jan 13 07:26 - 07:29  (00:03)    
+## lillyhua pts/13       108.53.250.47    Thu Jan 13 07:19 - 07:20  (00:01)    
+## jiahaoti pts/10       104-54-32-28.lig Thu Jan 13 07:18 - 07:22  (00:03)</code></pre>
+<p><strong><em><code>last | head</code> displays the first 10 lines of the list that displays information about the last login sessions of the system users.</em></strong></p>
+<pre class="bash"><code>echo {con,pre}{sent,fer}{s,ed}</code></pre>
+<pre><code>## consents consented confers confered presents presented prefers prefered</code></pre>
+<p><strong><em><code>echo {con,pre}{sent,fer}{s,ed}</code> gives us the combination of all possible words.</em></strong></p>
+<pre class="bash"><code>time sleep 5</code></pre>
+<pre><code>## 
+## real 0m5.001s
+## user 0m0.001s
+## sys  0m0.000s</code></pre>
+<p><strong><em><code>time sleep 5</code> delays for 5 seconds during the execution of any scrip.</em></strong></p>
+<pre class="bash"><code>history | tail</code></pre>
+<p><strong><em><code>history | tail</code> shows us history of the last 10 commands which were typed in terminal.</em></strong></p>
 </div>
 </div>
 
