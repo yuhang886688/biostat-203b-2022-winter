@@ -32,11 +32,13 @@ sessionInfo()
 
 This exercise (and later in this course) uses the [MIMIC-IV data](https://mimic-iv.mit.edu), a freely accessible critical care database developed by the MIT Lab for Computational Physiology. Follow the instructions at <https://mimic.mit.edu/docs/gettingstarted/> to (1) complete the CITI `Data or Specimens Only Research` course and (2) obtain the PhysioNet credential for using the MIMIC-IV data. Display the verification links to your completion report and completion certificate here. (Hint: The CITI training takes a couple hours and the PhysioNet credentialing takes a couple days; do not leave it to the last minute.)
 
+
 **My Completion Report**
 https://www.citiprogram.org/verify/?k3652f3ca-2ca0-4296-b2c5-88037b02ca62-46512539
 
 **My Completion Certificate**
 https://www.citiprogram.org/verify/?w5993136a-62bf-4c93-addc-b3ca28e9fb34-46512539
+
 
 ## Q3. Linux Shell Commands
 
@@ -48,22 +50,90 @@ Please, do **not** put these data files into Git; they are big. Do **not** copy 
 
     Use Bash commands to answer following questions.
 
-2. Display the contents in the folders `core`, `hosp`, `icu`. Why are these data files distributed as `.csv.gz` files instead of `.csv` (comma separated values) files? Read the page <https://mimic.mit.edu/docs/iv/> to understand what's in each folder.
+2. Display the contents in the folders `core`, `hosp`, `icu`. 
+    ```{bash}
+    ls -l /mnt/mimiciv/1.0/core/
+    ls -l /mnt/mimiciv/1.0/hosp/
+    ls -l /mnt/mimiciv/1.0/icu/
+    ```
+
+Why are these data files distributed as `.csv.gz` files instead of `.csv` (comma separated values) files? Read the page <https://mimic.mit.edu/docs/iv/> to understand what's in each folder.
+
+
+***CSV.GZ is a CSV file compressed with gzip utility. Using compressed files can help us process more efficiently. It does not cost too much memory, and it enables us to better know the structures of the files.***
+
+
 
 3. Briefly describe what bash commands `zcat`, `zless`, `zmore`, and `zgrep` do.
 
+
+***`zcat` is a command line utility for viewing the contents of a compressed file without literally uncompressing it;***
+
+***`zless` and `zmore` are filters which allow examination of compressed or plain text files one screenful at a time on a soft-copy terminal;***
+
+***`zgrep` lets you search the contents of a compressed file without extracting the contents first.***
+
+***The `zcat`, `zless`, and `zmore` commands work the same way as `cat`, `less`, and `more`.***
+
+
+
 4. What's the output of following bash script?
-    ```{bash, eval=F}
+    ```{bash}
     for datafile in /mnt/mimiciv/1.0/core/*.gz
       do
         ls -l $datafile
       done
     ```
-Display the number of lines in each data file using a similar loop.
 
-5. Display the first few lines of `admissions.csv.gz`. How many rows are in this data file? How many unique patients (identified by `subject_id`) are in this data file? (Hint: combine Linux commands `zcat`, `head`/`tail`, `awk`, `sort`, `uniq`, `wc`, and so on.)
+***The output of the bash script is the list of all gz (compressed) files in the `core` folder in a long listing format.***
+
+
+Display the number of lines in each data file using a similar loop.
+    ```{bash}
+    for datafile in /mnt/mimiciv/1.0/core/*.gz
+      do
+        wc -l $datafile
+      done
+    ```
+
+
+5. Display the first few lines of `admissions.csv.gz`. 
+
+    ```{bash}
+    zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | head -5
+    ```
+
+How many rows are in this data file?
+
+    ```{bash}
+    zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | wc -l
+    ```
+
+How many unique patients (identified by `subject_id`) are in this data file? (Hint: combine Linux commands `zcat`, `head`/`tail`, `awk`, `sort`, `uniq`, `wc`, and so on.)
+
+    ```{bash}
+    zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | sort -u -t, -k1,1 | wc -l
+    #zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | awk -F"," '!_[$1]++' | wc -l
+    ```
+
 
 6. What are the possible values taken by each of the variable `admission_type`, `admission_location`, `insurance`, and `ethnicity`? Also report the count for each unique value of these variables. (Hint: combine Linux commands `zcat`, `head`/`tail`, `awk`, `uniq -c`, `wc`, and so on.)
+
+
+    ```{bash}
+    zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | awk -F ',' 'NR>1 {print $6}' | sort | uniq -c
+    ```
+    ```{bash}
+    zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | awk -F ',' 'NR>1 {print $7}' | sort | uniq -c
+    ```
+    ```{bash}
+    zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | awk -F ',' 'NR>1 {print $9}' | sort | uniq -c
+    ```
+    ```{bash}
+    zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | awk -F ',' 'NR>1 {print $12}' | sort | uniq -c
+    ```
+
+
 
 ## Q4. Who's popular in Price and Prejudice
 
@@ -71,15 +141,24 @@ Display the number of lines in each data file using a similar loop.
     ```{bash, eval=FALSE}
     wget -nc http://www.gutenberg.org/cache/epub/42671/pg42671.txt
     ```
-Explain what `wget -nc` does. Do **not** put this text file `pg42671.txt` in Git. Complete the following loop to tabulate the number of times each of the four characters is mentioned using Linux commands.
+Explain what `wget -nc` does. 
+
+
+***`wget` is a command-line utility for downloading files from the web, and `-nc` indicates the file will not be retrieved if the file is already downloaded. If we delete `-nc`, the command will retrieve as another file with the same content.***
+
+
+
+Do **not** put this text file `pg42671.txt` in Git. Complete the following loop to tabulate the number of times each of the four characters is mentioned using Linux commands.
     ```{bash, eval=FALSE}
     wget -nc http://www.gutenberg.org/cache/epub/42671/pg42671.txt
     for char in Elizabeth Jane Lydia Darcy
     do
       echo $char:
-      # some commands here
+      cat pg42671.txt | grep -o -i $char | wc -l
     done
     ```
+
+
 
 2. What's the difference between the following two commands?
     ```{bash eval=FALSE}
@@ -89,6 +168,10 @@ Explain what `wget -nc` does. Do **not** put this text file `pg42671.txt` in Git
     ```{bash eval=FALSE}
     echo 'hello, world' >> test2.txt
     ```
+
+***The difference is that `>` overwrite the file content with `hello, world` while `>>` append the `hello, world` to the file.***
+
+
 
 3. Using your favorite text editor (e.g., `vi`), type the following and save the file as `middle.sh`:
     ```{bash eval=FALSE}
