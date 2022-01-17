@@ -39,8 +39,5 @@ vignettes/*.pdf
 .Renviron
 
 *.txt
-<<<<<<< HEAD
 *.sh
-=======
-*.sh
->>>>>>> develop
+
