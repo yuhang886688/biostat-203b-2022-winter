@@ -100,7 +100,7 @@ for datafile in /mnt/mimiciv/1.0/core/*.gz
 5. Display the first few lines of `admissions.csv.gz`. 
 
 ```{bash}
-zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | head -5
+zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | head
 ```
 
 
@@ -113,8 +113,8 @@ zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | wc -l
 How many unique patients (identified by `subject_id`) are in this data file? (Hint: combine Linux commands `zcat`, `head`/`tail`, `awk`, `sort`, `uniq`, `wc`, and so on.)
 
 ```{bash}
-zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | sort -u -t, -k1,1 | wc -l
-#zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | awk -F"," '!_[$1]++' | wc -l
+zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | tail -n+2 | sort -u -t, -k1,1 | wc -l
+#zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | tail -n+2 | awk -F"," '!_[$1]++' | wc -l
 ```
 
 
