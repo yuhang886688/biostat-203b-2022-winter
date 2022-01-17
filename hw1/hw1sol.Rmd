@@ -273,7 +273,7 @@ echo {con,pre}{sent,fer}{s,ed}
 ```{bash}
 time sleep 5
 ```
-***`time sleep 5` delays for 5 seconds during the execution of any scrip.***
+***`time sleep 5` delays for 5 seconds during the execution of any scrip and prints a summary of real-time, user CPU time and system CPU time spent by executing this command when it terminates..***
 
 ```{bash}
 history | tail
