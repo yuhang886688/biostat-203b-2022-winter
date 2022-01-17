@@ -132,7 +132,7 @@ zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | awk -F ',' 'NR>1 {print $9}' | so
 ```
 ```{bash}
 zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | awk -F ',' 'NR>1 {print $12}' | sort | uniq -c
-    ```
+```
 
 
 
