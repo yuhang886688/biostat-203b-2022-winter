@@ -85,6 +85,7 @@ for datafile in /mnt/mimiciv/1.0/core/*.gz
   done
 ```
 
+
 ***The output of the bash script is the list of all gz (compressed) files in the `core` folder in a long listing format.***
 
 

@@ -39,4 +39,3 @@ vignettes/*.pdf
 .Renviron
 
 *.txt
-*.sh
