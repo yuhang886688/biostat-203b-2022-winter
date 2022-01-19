@@ -85,6 +85,7 @@ for datafile in /mnt/mimiciv/1.0/core/*.gz
   done
 ```
 
+
 ***The output of the bash script is the list of all gz (compressed) files in the `core` folder in a long listing format.***
 
 
@@ -92,7 +93,7 @@ Display the number of lines in each data file using a similar loop.
 ```{bash}
 for datafile in /mnt/mimiciv/1.0/core/*.gz
   do
-    wc -l $datafile
+    gzip -cd $datafile | wc -l
   done
 ```
 
@@ -113,8 +114,10 @@ zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | wc -l
 How many unique patients (identified by `subject_id`) are in this data file? (Hint: combine Linux commands `zcat`, `head`/`tail`, `awk`, `sort`, `uniq`, `wc`, and so on.)
 
 ```{bash}
-zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | tail -n+2 | sort -u -t, -k1,1 | wc -l
-#zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | tail -n+2 | awk -F"," '!_[$1]++' | wc -l
+zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | tail -n+2 | 
+sort -u -t, -k1,1 | wc -l
+#zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | tail -n+2 | 
+#awk -F"," '!_[$1]++' | wc -l
 ```
 
 
@@ -122,17 +125,21 @@ zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | tail -n+2 | sort -u -t, -k1,1 | w
 
 
 ```{bash}
-zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | awk -F ',' 'NR>1 {print $6}' | sort | uniq -c
+zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | 
+awk -F ',' 'NR>1 {print $6}' | sort | uniq -c
 ```
 ```{bash}
-zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | awk -F ',' 'NR>1 {print $7}' | sort | uniq -c
+zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | 
+awk -F ',' 'NR>1 {print $7}' | sort | uniq -c
 ```
 ```{bash}
-zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | awk -F ',' 'NR>1 {print $9}' | sort | uniq -c
+zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | 
+awk -F ',' 'NR>1 {print $9}' | sort | uniq -c
 ```
 ```{bash}
-zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | awk -F ',' 'NR>1 {print $12}' | sort | uniq -c
-```
+zcat /mnt/mimiciv/1.0/core/admissions.csv.gz | 
+awk -F ',' 'NR>1 {print $12}' | sort | uniq -c
+    ```
 
 
 
@@ -273,7 +280,7 @@ echo {con,pre}{sent,fer}{s,ed}
 ```{bash}
 time sleep 5
 ```
-***`time sleep 5` delays for 5 seconds during the execution of any scrip.***
+***`time sleep 5` delays for 5 seconds during the execution of any scrip and prints a summary of real-time, user CPU time and system CPU time spent by executing this command when it terminates..***
 
 ```{bash}
 history | tail
