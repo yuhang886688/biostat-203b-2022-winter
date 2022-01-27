@@ -40,7 +40,26 @@ system(str_c("tree -s -L 2 ", shQuote(mimic_path)), intern = TRUE)
 
 There are quite a few utilities in R for reading plain text data files. Let us test the speed of reading a moderate sized compressed csv file, `admissions.csv.gz`, by three programs: `read.csv` in base R, `read_csv` in tidyverse, and `fread` in the popular data.table package. 
 
-Which function is fastest? Is there difference in the (default) parsed data types? (Hint: R function `system.time` measures run times.)
+
+Which function is fastest? 
+
+```{r}
+system.time(read.csv("/mnt/mimiciv/1.0/core/admissions.csv.gz"))
+system.time(read_csv("/mnt/mimiciv/1.0/core/admissions.csv.gz"))
+system.time(fread("/mnt/mimiciv/1.0/core/admissions.csv.gz"))
+```
+***Function `fread` is fastest.***
+
+
+Is there difference in the (default) parsed data types? (Hint: R function `system.time` measures run times.)
+```{r}
+typeof(read.csv("/mnt/mimiciv/1.0/core/admissions.csv.gz"))
+typeof(read_csv("/mnt/mimiciv/1.0/core/admissions.csv.gz"))
+typeof(fread("/mnt/mimiciv/1.0/core/admissions.csv.gz"))
+```
+***Using the `typeof` function, we can check the parsed data types of these three programs. All the three programs generate `list` as the data type.***
+
+
 
 For later questions, we stick to the tidyverse.
 
@@ -60,7 +79,19 @@ system(
 
 1. Import `icustatys.csv.gz` as a tibble `icustays_tble`. 
 
+```{r}
+icustays_tble <- as.tibble(read_csv("/mnt/mimiciv/1.0/icu/icustays.csv.gz"))
+```
+
+
 2. How many unique `subject_id`? Can a `subject_id` have multiple ICU stays? 
+
+```{r}
+length(unique(icustays_tble$subject_id))
+length(icustays_tble$subject_id)
+```
+***There are 53150 unique `subject_id`. A `subject_id` can have multiple ICU stays.***
+
 
 3. For each `subject_id`, let's only keep the first ICU stay in the tibble `icustays_tble`.
 
