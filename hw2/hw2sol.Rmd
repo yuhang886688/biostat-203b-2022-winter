@@ -206,6 +206,8 @@ summarise(patients_tble, mean = mean(anchor_age))
 ```
 ***There is a higher proportion of male patients. The average anchor age of the patients is 63.5.***
 
+
+
 ## Q5. Lab results
 
 `labevents.csv.gz` (<https://mimic.mit.edu/docs/iv/modules/hosp/labevents/>) contains all laboratory measurements for patients. The first 10 lines are
@@ -233,12 +235,45 @@ system(
 
 1. Find how many rows are in `labevents.csv.gz`.
 
+```{r}
+count(read_csv("/mnt/mimiciv/1.0/hosp/labevents_filtered_itemid.csv.gz"))
+#nrow(read_csv("/mnt/mimiciv/1.0/hosp/labevents_filtered_itemid.csv.gz"))
+```
+***There are 30198826 rows in `labevents_filtered_itemid.csv.gz`.***
+
+
+
 2. We are interested in the lab measurements of creatinine (50912), potassium (50971), sodium (50983), chloride (50902), bicarbonate (50882), hematocrit (51221), white blood cell count (51301), glucose (50931), magnesium (50960), and calcium (50893). Retrieve a subset of `labevents.csv.gz` only containing these items for the patients in `icustays_tble` as a tibble `labevents_tble`. 
 
     Hint: `labevents.csv.gz` is a data file too big to be read in by the `read_csv` function in its default setting. Utilize the `col_select` and `lazy` options in the `read_csv` function to reduce the memory burden.
 
+```{r}
+labevents_tble <- 
+  read_csv("/mnt/mimiciv/1.0/hosp/labevents_filtered_itemid.csv.gz") %>% 
+  filter(itemid %in% c("50912", "50971", "50983", "50902", "50882", 
+                       "51221", "51301", "50931", "50960", "50893")) %>% 
+  as_tibble() %>% 
+  inner_join(icustays_tble, by = "subject_id")
+```
+
+
 3. Further restrict `labevents_tble` to the first lab measurement during the ICU stay. 
+
+```{r}
+labevents_tble <- labevents_tble %>% 
+  group_by(subject_id, itemid) %>% 
+	arrange(subject_id, itemid) %>% 
+  slice_head(n=1) 
+```
+
 4. Summarize the lab measurements by appropriate numerics and graphics. 
+```{r}
+labevents_tble %>% 
+  group_by(itemid) %>%
+  summarise(itemmean = mean(valuenum, na.rm = TRUE))
+```
+
+
 
 ## Q6. Vitals from charted events
 
@@ -265,9 +300,33 @@ system(
 
 1. We are interested in the vitals for ICU patients: heart rate (220045), mean non-invasive blood pressure (220181), systolic non-invasive blood pressure (220179), body temperature in Fahrenheit (223761), and respiratory rate (220210). Retrieve a subset of `chartevents.csv.gz` only containing these items for the patients in `icustays_tble` as a tibble `chartevents_tble`.
 
+```{r}
+chartevents_tble <- 
+  read_csv("/mnt/mimiciv/1.0/icu/chartevents_filtered_itemid.csv.gz") %>% 
+  filter(itemid %in% c("220045", "220181", "220179", "223761", "220210")) %>% 
+  as_tibble() %>% 
+  inner_join(icustays_tble, by = "subject_id")
+```
+
+
 2. Further restrict `chartevents_tble` to the first vital measurement during the ICU stay. 
 
+```{r}
+chartevents_tble <- chartevents_tble %>% 
+  group_by(subject_id, itemid) %>% 
+	arrange(subject_id, itemid) %>% 
+  slice_head(n=1) 
+```
+
 3. Summarize these vital measurements by appropriate numerics and graphics. 
+
+```{r}
+chartevents_tble %>% 
+  group_by(itemid) %>%
+  summarise(itemmean = mean(valuenum, na.rm = TRUE))
+```
+
+
 
 ## Q7. Putting things together
 
@@ -284,6 +343,16 @@ and columns contain at least following variables
 - first vital measurements during ICU stay
 - an indicator variable `thirty_day_mort` whether the patient died within 30 days of hospital admission (30 day mortality)
 
+```{r}
+mimic_icu_cohort <- icustays_tble %>%
+  left_join(admissions_tble, by = "subject_id") %>%
+  left_join(patients_tble, by = "subject_id") %>%
+  mutate(thirty_day_mort = ifelse(deathtime - admittime < 30, 1, 0)) %>%
+  mutate(thirty_day_mort = coalesce(thirty_day_mort, 0))
+```
+
+
+
 ## Q8. Exploratory data analysis (EDA)
 
 Summarize following information using appropriate numerics or graphs.
@@ -295,4 +364,12 @@ Summarize following information using appropriate numerics or graphs.
 - `thirty_day_mort` vs first vital measurements
 
 - `thirty_day_mort` vs first ICU unit
+
+```{r}
+table(mimic_icu_cohort$thirty_day_mort, mimic_icu_cohort$ethnicity)
+table(mimic_icu_cohort$thirty_day_mort, mimic_icu_cohort$language)
+table(mimic_icu_cohort$thirty_day_mort, mimic_icu_cohort$insurance)
+table(mimic_icu_cohort$thirty_day_mort, mimic_icu_cohort$marital_status)
+table(mimic_icu_cohort$thirty_day_mort, mimic_icu_cohort$gender)
+```
 
