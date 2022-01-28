@@ -80,7 +80,7 @@ system(
 1. Import `icustatys.csv.gz` as a tibble `icustays_tble`. 
 
 ```{r}
-icustays_tble <- as.tibble(read_csv("/mnt/mimiciv/1.0/icu/icustays.csv.gz"))
+icustays_tble <- as_tibble(read_csv("/mnt/mimiciv/1.0/icu/icustays.csv.gz"))
 ```
 
 
@@ -94,6 +94,13 @@ length(icustays_tble$subject_id)
 
 
 3. For each `subject_id`, let's only keep the first ICU stay in the tibble `icustays_tble`.
+
+```{r}
+icustays_tble <- icustays_tble %>% 
+  group_by(subject_id) %>% 
+	arrange(subject_id, stay_id) %>% 
+  slice_head(n=1)
+```
 
 ## Q3. `admission` data
 
@@ -111,15 +118,63 @@ system(
 
 1. Import `admissions.csv.gz` as a tibble `admissions_tble`.
 
+```{r}
+admissions_tble <- read_csv("/mnt/mimiciv/1.0/core/admissions.csv.gz") %>% 
+  as_tibble()
+```
+
 2. Let's only keep the admissions that have a match in `icustays_tble` according to `subject_id` and `hadmi_id`.
+
+```{r}
+admissions_tble <- admissions_tble %>%
+  inner_join(icustays_tble, by = c("subject_id", "hadm_id"))
+```
+
 
 3. Summarize the following variables by graphics. 
 
 - admission year  
+```{r}
+admissions_tble %>% 
+  ggplot(aes(x= year(admittime))) + 
+  geom_freqpoly(binwidth=1) + 
+  labs(x="Admission year")
+```
+
 - admission month  
-- admission month day  
+```{r}
+admissions_tble %>% 
+  ggplot(aes(x= month(admittime))) + 
+  geom_freqpoly(binwidth=1) + 
+  labs(x="Admission month")
+```
+
+- admission month day
+```{r}
+admissions_tble %>% 
+  ggplot(aes(x= mday(admittime))) + 
+  geom_freqpoly(binwidth=1) + 
+  labs(x="Admission month day")
+```
+
 - admission week day  
+```{r}
+admissions_tble %>% 
+  ggplot(aes(x= wday(admittime))) + 
+  geom_freqpoly(binwidth=1) + 
+  labs(x="Admission week day")
+```
+
 - admission hour (anything unusual?)  
+```{r}
+admissions_tble %>% 
+  ggplot(aes(x= hour(admittime))) + 
+  geom_freqpoly(binwidth=1) + 
+  labs(x="Admission hour")
+```
+***Extremely high number of admissions at midnight (12 am).***
+
+
 
 ## Q4. `patients` data
 
@@ -137,7 +192,19 @@ system(
 
 1. Import `patients.csv.gz` (<https://mimic.mit.edu/docs/iv/modules/core/patients/>) as a tibble `patients_tble` and only keep the patients who have a match in `icustays_tble` (according to `subject_id`).
 
+```{r}
+patients_tble <- read_csv("/mnt/mimiciv/1.0/core/patients.csv.gz") %>% 
+  as_tibble() %>% 
+  inner_join(icustays_tble, by = "subject_id")
+```
+
 2. Summarize variables `gender` and `anchor_age`, and explain any patterns you see.
+
+```{r}
+table(patients_tble$gender)
+summarise(patients_tble, mean = mean(anchor_age))
+```
+***There is a higher proportion of male patients. The average anchor age of the patients is 63.5.***
 
 ## Q5. Lab results
 
