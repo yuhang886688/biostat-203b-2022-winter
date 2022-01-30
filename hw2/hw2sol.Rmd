@@ -53,11 +53,16 @@ system.time(fread("/mnt/mimiciv/1.0/core/admissions.csv.gz"))
 
 Is there difference in the (default) parsed data types? (Hint: R function `system.time` measures run times.)
 ```{r}
-typeof(read.csv("/mnt/mimiciv/1.0/core/admissions.csv.gz"))
-typeof(read_csv("/mnt/mimiciv/1.0/core/admissions.csv.gz"))
-typeof(fread("/mnt/mimiciv/1.0/core/admissions.csv.gz"))
+str(read.csv("/mnt/mimiciv/1.0/core/admissions.csv.gz"))
+str(read_csv("/mnt/mimiciv/1.0/core/admissions.csv.gz", 
+             show_col_types = FALSE))
+str(fread("/mnt/mimiciv/1.0/core/admissions.csv.gz"))
+#typeof(read.csv("/mnt/mimiciv/1.0/core/admissions.csv.gz"))
+#typeof(read_csv("/mnt/mimiciv/1.0/core/admissions.csv.gz",
+#                show_col_types = FALSE))
+#typeof(fread("/mnt/mimiciv/1.0/core/admissions.csv.gz"))
 ```
-***Using the `typeof` function, we can check the parsed data types of these three programs. All the three programs generate `list` as the data type.***
+***Using the `str` function, we can check the parsed data types of these three programs. `read.csv` generates a data frame; `read_csv` generates a tibble; `fread` generates a data table. All the generated files are lists***
 
 
 
@@ -80,7 +85,10 @@ system(
 1. Import `icustatys.csv.gz` as a tibble `icustays_tble`. 
 
 ```{r}
-icustays_tble <- as_tibble(read_csv("/mnt/mimiciv/1.0/icu/icustays.csv.gz"))
+icustays_tble <- read_csv("/mnt/mimiciv/1.0/icu/icustays.csv.gz", 
+                          show_col_types = FALSE) %>% 
+  as_tibble()
+  
 ```
 
 
@@ -119,15 +127,17 @@ system(
 1. Import `admissions.csv.gz` as a tibble `admissions_tble`.
 
 ```{r}
-admissions_tble <- read_csv("/mnt/mimiciv/1.0/core/admissions.csv.gz") %>% 
+admissions_tble <- read_csv("/mnt/mimiciv/1.0/core/admissions.csv.gz", 
+                            show_col_types = FALSE) %>% 
   as_tibble()
 ```
 
 2. Let's only keep the admissions that have a match in `icustays_tble` according to `subject_id` and `hadmi_id`.
 
 ```{r}
+icustays_id <- select(icustays_tble, c("subject_id", "hadm_id"))
 admissions_tble <- admissions_tble %>%
-  inner_join(icustays_tble, by = c("subject_id", "hadm_id"))
+  inner_join(icustays_id, by = c("subject_id", "hadm_id"))
 ```
 
 
@@ -138,7 +148,8 @@ admissions_tble <- admissions_tble %>%
 admissions_tble %>% 
   ggplot(aes(x= year(admittime))) + 
   geom_freqpoly(binwidth=1) + 
-  labs(x="Admission year")
+  labs(x="Admission year") + 
+  theme_bw()
 ```
 
 - admission month  
@@ -146,7 +157,8 @@ admissions_tble %>%
 admissions_tble %>% 
   ggplot(aes(x= month(admittime))) + 
   geom_freqpoly(binwidth=1) + 
-  labs(x="Admission month")
+  labs(x="Admission month") + 
+  theme_bw()
 ```
 
 - admission month day
@@ -154,7 +166,8 @@ admissions_tble %>%
 admissions_tble %>% 
   ggplot(aes(x= mday(admittime))) + 
   geom_freqpoly(binwidth=1) + 
-  labs(x="Admission month day")
+  labs(x="Admission month day") +
+  theme_bw()
 ```
 
 - admission week day  
@@ -162,7 +175,8 @@ admissions_tble %>%
 admissions_tble %>% 
   ggplot(aes(x= wday(admittime))) + 
   geom_freqpoly(binwidth=1) + 
-  labs(x="Admission week day")
+  labs(x="Admission week day") +
+  theme_bw()
 ```
 
 - admission hour (anything unusual?)  
@@ -170,7 +184,8 @@ admissions_tble %>%
 admissions_tble %>% 
   ggplot(aes(x= hour(admittime))) + 
   geom_freqpoly(binwidth=1) + 
-  labs(x="Admission hour")
+  labs(x="Admission hour") +
+  theme_bw()
 ```
 ***Extremely high number of admissions at midnight (12 am).***
 
@@ -193,9 +208,10 @@ system(
 1. Import `patients.csv.gz` (<https://mimic.mit.edu/docs/iv/modules/core/patients/>) as a tibble `patients_tble` and only keep the patients who have a match in `icustays_tble` (according to `subject_id`).
 
 ```{r}
-patients_tble <- read_csv("/mnt/mimiciv/1.0/core/patients.csv.gz") %>% 
+patients_tble <- read_csv("/mnt/mimiciv/1.0/core/patients.csv.gz", 
+                          show_col_types = FALSE) %>% 
   as_tibble() %>% 
-  inner_join(icustays_tble, by = "subject_id")
+  inner_join(select(icustays_tble, "subject_id"), by = "subject_id")
 ```
 
 2. Summarize variables `gender` and `anchor_age`, and explain any patterns you see.
@@ -236,8 +252,10 @@ system(
 1. Find how many rows are in `labevents.csv.gz`.
 
 ```{r}
-count(read_csv("/mnt/mimiciv/1.0/hosp/labevents_filtered_itemid.csv.gz"))
-#nrow(read_csv("/mnt/mimiciv/1.0/hosp/labevents_filtered_itemid.csv.gz"))
+count(read_csv("/mnt/mimiciv/1.0/hosp/labevents_filtered_itemid.csv.gz", 
+               show_col_types = FALSE))
+#nrow(read_csv("/mnt/mimiciv/1.0/hosp/labevents_filtered_itemid.csv.gz",
+#              show_col_types = FALSE))
 ```
 ***There are 30198826 rows in `labevents_filtered_itemid.csv.gz`.***
 
@@ -249,11 +267,12 @@ count(read_csv("/mnt/mimiciv/1.0/hosp/labevents_filtered_itemid.csv.gz"))
 
 ```{r}
 labevents_tble <- 
-  read_csv("/mnt/mimiciv/1.0/hosp/labevents_filtered_itemid.csv.gz") %>% 
+  read_csv("/mnt/mimiciv/1.0/hosp/labevents_filtered_itemid.csv.gz", 
+           show_col_types = FALSE) %>% 
   filter(itemid %in% c("50912", "50971", "50983", "50902", "50882", 
                        "51221", "51301", "50931", "50960", "50893")) %>% 
   as_tibble() %>% 
-  inner_join(icustays_tble, by = "subject_id")
+  inner_join(select(icustays_tble, "subject_id"), by = "subject_id")
 ```
 
 
@@ -261,8 +280,8 @@ labevents_tble <-
 
 ```{r}
 labevents_tble <- labevents_tble %>% 
-  group_by(subject_id, itemid) %>% 
-	arrange(subject_id, itemid) %>% 
+  group_by(subject_id) %>% 
+	arrange(subject_id, charttime) %>% 
   slice_head(n=1) 
 ```
 
@@ -302,10 +321,11 @@ system(
 
 ```{r}
 chartevents_tble <- 
-  read_csv("/mnt/mimiciv/1.0/icu/chartevents_filtered_itemid.csv.gz") %>% 
+  read_csv("/mnt/mimiciv/1.0/icu/chartevents_filtered_itemid.csv.gz", 
+           show_col_types = FALSE) %>% 
   filter(itemid %in% c("220045", "220181", "220179", "223761", "220210")) %>% 
   as_tibble() %>% 
-  inner_join(icustays_tble, by = "subject_id")
+  inner_join(select(icustays_tble, "subject_id"), by = "subject_id")
 ```
 
 
@@ -313,8 +333,8 @@ chartevents_tble <-
 
 ```{r}
 chartevents_tble <- chartevents_tble %>% 
-  group_by(subject_id, itemid) %>% 
-	arrange(subject_id, itemid) %>% 
+  group_by(subject_id) %>% 
+	arrange(subject_id, stay_id) %>% 
   slice_head(n=1) 
 ```
 
@@ -345,8 +365,11 @@ and columns contain at least following variables
 
 ```{r}
 mimic_icu_cohort <- icustays_tble %>%
-  left_join(admissions_tble, by = "subject_id") %>%
-  left_join(patients_tble, by = "subject_id") %>%
+  left_join(admissions_tble, by = c("subject_id", "hadm_id")) %>%
+  left_join(patients_tble, by = "subject_id") %>% 
+  filter(anchor_age > 18) %>% 
+  left_join(labevents_tble, by = "subject_id") %>%
+  left_join(chartevents_tble, by = c("subject_id", "hadm_id", "stay_id")) %>% 
   mutate(thirty_day_mort = ifelse(deathtime - admittime < 30, 1, 0)) %>%
   mutate(thirty_day_mort = coalesce(thirty_day_mort, 0))
 ```
@@ -371,5 +394,12 @@ table(mimic_icu_cohort$thirty_day_mort, mimic_icu_cohort$language)
 table(mimic_icu_cohort$thirty_day_mort, mimic_icu_cohort$insurance)
 table(mimic_icu_cohort$thirty_day_mort, mimic_icu_cohort$marital_status)
 table(mimic_icu_cohort$thirty_day_mort, mimic_icu_cohort$gender)
+mimic_icu_cohort %>% 
+  group_by(thirty_day_mort) %>%
+  summarise(age_hospadmin = mean(anchor_age, na.rm = TRUE))
+
+table(mimic_icu_cohort$thirty_day_mort, mimic_icu_cohort$itemid.x)
+table(mimic_icu_cohort$thirty_day_mort, mimic_icu_cohort$itemid.y)
+table(mimic_icu_cohort$thirty_day_mort, mimic_icu_cohort$first_careunit)
 ```
 
