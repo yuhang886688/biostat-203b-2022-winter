@@ -1,6 +1,6 @@
 *Yuhang Qian*
 
-### Overall Grade: 117.5/120
+### Overall Grade: 120/120
 
 ### Quality of report: 10/10
 
@@ -20,15 +20,13 @@
 
     Yes.
     
-### Completeness, correctness and efficiency of solution: 67.5/70
+### Completeness, correctness and efficiency of solution: 70/70
 
 - Q1 (10/10)
 
 - Q2 (20/20)
 
-- Q3 (17.5/20)
-
-    Did not take off the header for the first part of the problem, the number of rows by `-tail n+2`. `-2.5
+- Q3 (20/20)
 
 - Q4 (10/10)
 
