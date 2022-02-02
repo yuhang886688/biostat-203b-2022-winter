@@ -135,9 +135,8 @@ admissions_tble <- read_csv("/mnt/mimiciv/1.0/core/admissions.csv.gz",
 2. Let's only keep the admissions that have a match in `icustays_tble` according to `subject_id` and `hadmi_id`.
 
 ```{r}
-icustays_id <- select(icustays_tble, c("subject_id", "hadm_id"))
 admissions_tble <- admissions_tble %>%
-  inner_join(icustays_id, by = c("subject_id", "hadm_id"))
+  semi_join(icustays_id, by = c("subject_id", "hadm_id"))
 ```
 
 
@@ -211,7 +210,7 @@ system(
 patients_tble <- read_csv("/mnt/mimiciv/1.0/core/patients.csv.gz", 
                           show_col_types = FALSE) %>% 
   as_tibble() %>% 
-  inner_join(select(icustays_tble, "subject_id"), by = "subject_id")
+  semi_join(icustays_tble, by = "subject_id")
 ```
 
 2. Summarize variables `gender` and `anchor_age`, and explain any patterns you see.
@@ -272,7 +271,7 @@ labevents_tble <-
   filter(itemid %in% c("50912", "50971", "50983", "50902", "50882", 
                        "51221", "51301", "50931", "50960", "50893")) %>% 
   as_tibble() %>% 
-  inner_join(select(icustays_tble, "subject_id"), by = "subject_id")
+  semi_join(icustays_tble, by = "subject_id")
 ```
 
 
@@ -325,7 +324,7 @@ chartevents_tble <-
            show_col_types = FALSE) %>% 
   filter(itemid %in% c("220045", "220181", "220179", "223761", "220210")) %>% 
   as_tibble() %>% 
-  inner_join(select(icustays_tble, "subject_id"), by = "subject_id")
+  semi_join(icustays_tble, by = "subject_id")
 ```
 
 
