@@ -445,10 +445,7 @@ cal 9 1752</code></pre>
 ## 24 25 26 27 28 29 30</code></pre>
 <p><strong><em><code>cal</code> is a calendar command in Linux which is used to see the calendar of a specific month or a whole year. <code>cal 2021</code> displays the calendar of year 2021. <code>cal 9 1752</code> displays the calendar of September year 1752, and we can see that some days are missing. The Gregorian calendar reform was adopted by the Kingdom of Great Britain, including its possessions in North America (later to become eastern USA and Canada), in September 1752. As a result, the September 1752 cal shows the adjusted days missing. This month was the official (British) adoption of the Gregorian calendar from the previously used Julian calendar. This has been documented in the man pages for Sun Solaris as follows. “An unusual calendar is printed for September 1752. That is the month when 11 days were skipped to make up for lack of leap year adjustments.”</em></strong></p>
 <pre class="bash"><code>date</code></pre>
-<pre><code>## Wed Jan 19 08:42:51 UTC 2022</code></pre>
-<p><strong><em><code>date</code> command is used to display the system date and time.</em></strong></p>
-<pre class="bash"><code>hostname</code></pre>
-<pre><code>## biostat-203b-teaching-server</code></pre>
+<pre><code>## Wed Jan 19 09:10:59 UTC 2022</code></pre>
 <p><strong><em><code>date</code> command is used to display the system date and time.</em></strong></p>
 <pre class="bash"><code>hostname</code></pre>
 <pre><code>## biostat-203b-teaching-server</code></pre>
@@ -460,6 +457,9 @@ cal 9 1752</code></pre>
 <pre><code>## Linux biostat-203b-teaching-server 3.10.0-1160.49.1.el7.x86_64 #1 SMP Tue Nov 30 15:51:32 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux</code></pre>
 <p><strong><em><code>uname -a</code> command prints all the information, including the name, version and other details about the current machine and the operating system running on it. <code>-a</code> is the abbreviation of <code>all</code>.</em></strong></p>
 <pre class="bash"><code>uptime</code></pre>
+<pre><code>##  09:11:00 up 16 days,  8:44,  3 users,  load average: 0.58, 0.27, 0.17</code></pre>
+<p><strong><em><code>uptime</code> is a command that returns information about how long your system has been running together with the current time, number of users with running sessions, and the system load averages for the past 1, 5, and 15 minutes. It can also filter the information displayed at once depending on your specified options.</em></strong></p>
+<pre class="bash"><code>whoami</code></pre>
 <pre><code>## yuhang886688</code></pre>
 <p><strong><em><code>whoami</code>command displays the username of the current user when this command is invoked. Here the username is <code>yuhang886688</code>, which is myself.</em></strong></p>
 <pre class="bash"><code>who</code></pre>
@@ -468,11 +468,11 @@ cal 9 1752</code></pre>
 ## maschepps pts/6        2022-01-17 19:33 (74.213.228.243)</code></pre>
 <p><strong><em><code>who</code> is used to get information about currently logged in user on to system.</em></strong></p>
 <pre class="bash"><code>w</code></pre>
-<pre><code>##  08:42:51 up 16 days,  8:16,  3 users,  load average: 0.29, 0.16, 0.14
+<pre><code>##  09:11:00 up 16 days,  8:44,  3 users,  load average: 0.58, 0.27, 0.17
 ## USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
 ## tomokiok pts/1    42.166.94.34.bc. 11Jan22  8days  0.01s  0.01s -bash
 ## tomokiok pts/3    42.166.94.34.bc. 10Jan22  8days  0.95s  0.77s ssh -i /home/tomokiokuno0528/.ssh/id_rsa tomokiokuno0528@server.ucla-biostat-203b.com
-## maschepp pts/6    74.213.228.243   Mon19   36:59m  0.03s  0.03s -bash</code></pre>
+## maschepp pts/6    74.213.228.243   Mon19   37:27m  0.03s  0.03s -bash</code></pre>
 <p><strong><em><code>w</code> is used to show who is logged on and what they are doing.</em></strong></p>
 <pre class="bash"><code>id</code></pre>
 <pre><code>## uid=1027(yuhang886688) gid=1029(yuhang886688) groups=1029(yuhang886688) context=system_u:system_r:initrc_t:s0</code></pre>
@@ -494,9 +494,9 @@ cal 9 1752</code></pre>
 <p><strong><em><code>echo {con,pre}{sent,fer}{s,ed}</code> gives us the combination of all possible words.</em></strong></p>
 <pre class="bash"><code>time sleep 5</code></pre>
 <pre><code>## 
-## real 0m5.001s
-## user 0m0.001s
-## sys  0m0.000s</code></pre>
+## real 0m5.002s
+## user 0m0.000s
+## sys  0m0.001s</code></pre>
 <p><strong><em><code>time sleep 5</code> delays for 5 seconds during the execution of any scrip and prints a summary of real-time, user CPU time and system CPU time spent by executing this command when it terminates..</em></strong></p>
 <pre class="bash"><code>history | tail</code></pre>
 <p><strong><em><code>history | tail</code> shows us history of the last 10 commands which were typed in terminal.</em></strong></p>
