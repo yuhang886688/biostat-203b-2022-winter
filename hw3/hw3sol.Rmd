@@ -84,30 +84,62 @@ icustays_tble <- icustays_tble %>%
 4. Connect to the `admissions` table and only keep the patients who have a match in `icustays_tble` (according to `subject_id` and `hadm_id`).
 ```{r}
 # # TODO
-# admissions_tble <- 
+admissions_tble <- tbl(con, "admissions") %>%
+  semi_join(icustays_tble, by = c("subject_id", "hadm_id")) %>%
+  show_query() %>%
+  print(width = Inf)
 ```
 
 5. Connect to the `patients` table and only keep the patients who have a match in `icustays_tble` (according to `subject_id`).
 ```{r}
 # # TODO
-# patients_tble <-
+patients_tble <- tbl(con, "patients") %>% 
+  semi_join(icustays_tble, by = "subject_id") %>%
+  show_query() %>%
+  print(width = Inf)
 ```
 
 6. Connect to the `labevents` table and retrieve a subset that only contain subjects who appear in `icustays_tble` and the lab items listed in HW2. 
 ```{r}
 # # TODO
-# labevents_tble <- 
+labevents_tble <- tbl(con, "labevents") %>% 
+  semi_join(icustays_tble, by = "subject_id") %>% 
+  filter(itemid %in% c(50912, 50971, 50983, 50902, 50882, 
+                       51221, 51301, 50931, 50960, 50893)) %>%
+  show_query() %>%
+  print(width = Inf)
 ```
 Only keep the first lab measurements during ICU stay and pivot lab items to become variables/columns.
 ```{r}
 # # TODO
-# labevents_tble <- labevents_tble %>% ...
+labevents_tble <- labevents_tble %>% 
+  left_join(select(icustays_tble, subject_id, intime), 
+            by = c("subject_id")) %>%
+  filter(charttime >= intime) %>%
+  group_by(subject_id, itemid) %>% 
+  select(subject_id, charttime) %>%
+  summarise_all(min) %>% 
+  left_join(labevents_tble, by = c("subject_id", "charttime")) %>% 
+  select(-charttime) %>% 
+  ungroup() %>%
+  pivot_wider(names_from = itemid, values_from = valuenum) %>%
+  rename_at(
+    vars(as.character(dlabitems_tble$itemid)),
+    ~str_to_lower(dlabitems_tble$label)
+  ) %>% 
+  rename(wbc = 'white blood cells', calcium = 'calcium, total') %>%
+  show_query() %>%
+  print(width = Inf)
 ```
 
 7. Connect to `chartevents` table and retrieve a subset that only contain subjects who appear in `icustays_tble` and the chart events listed in HW2.
 ```{r}
 # # TODO
-# chartevents_tble <- 
+chartevents_tble <- tbl(con, "chartevents") %>%
+  semi_join(icustays_tble, by = "subject_id") %>% 
+  filter(itemid %in% c(220045, 220181, 220179, 223761, 220210)) %>%
+  show_query() %>%
+  print(width = Inf)
 ```
 Only keep the first chart events during ICU stay and pivot chart events to become variables/columns.
 ```{r}
