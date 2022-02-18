@@ -1,6 +1,7 @@
 ---
 title: "Biostat 203B Homework 3"
 subtitle: Due Feb 25 @ 11:59PM
+author: Yuhang Qian
 output:
   # ioslides_presentation: default
   html_document:
