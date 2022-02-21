@@ -115,19 +115,21 @@ Only keep the first lab measurements during ICU stay and pivot lab items to beco
 ```{r}
 # # TODO
 labevents_tble <- labevents_tble %>%
-  left_join(select(icustays_tble, subject_id, intime), 
-            by = c("subject_id")) %>% 
-  filter(charttime >= intime) %>% 
-  group_by(subject_id, itemid) %>% 
-	summarise_all(min) %>% 
-  select(-charttime, -intime) %>%
+  left_join(icustays_tble, by = c("subject_id")) %>% 
+  filter(charttime >= intime) %>%
+  select(subject_id, charttime) %>%
+  group_by(subject_id) %>% 
+	summarise_all(min) %>%
+  left_join(labevents_tble, by = c("subject_id", "charttime")) %>% 
+  select(-charttime) %>% 
   ungroup() %>% 
-  pivot_wider(names_from = itemid, values_from = valuenum) %>% 
-  rename_at(
-    vars(as.character(dlabitems_tble$itemid)),
-    ~str_to_lower(dlabitems_tble$label)
-  ) %>% 
-  rename(wbc = 'white blood cells', calcium = 'calcium, total') %>%
+  pivot_wider(names_from = itemid, names_prefix = "itemid_",
+              values_from = valuenum) %>%
+  rename(calcium = "itemid_50893", magnesium = "itemid_50960",
+         potassium = "itemid_50971", chloride = "itemid_50902",
+         sodium = "itemid_50983", creatinine = "itemid_50912",
+         bicarbonate = "itemid_50882", glucose = "itemid_50931",
+         hematocrit = "itemid_51221", wbc = "itemid_51301") %>%
   show_query() %>%
   print(width = Inf)
 ```
@@ -146,23 +148,21 @@ Only keep the first chart events during ICU stay and pivot chart events to becom
 ```{r}
 # # TODO
 chartevents_tble <- chartevents_tble %>%
-  left_join(select(icustays_tble, subject_id, intime), 
-            by = c("subject_id")) %>%
-  filter(charttime >= intime) %>%
-  group_by(subject_id, itemid) %>% 
+  left_join(icustays_tble, by = c("subject_id")) %>%
+  filter(charttime >= intime) %>% 
+  select(subject_id, charttime) %>%
+  group_by(subject_id) %>% 
 	summarise_all(min) %>% 
-  select(-charttime, -intime) %>% 
-  ungroup() %>%
-  pivot_wider(names_from = itemid, values_from = valuenum) %>%
-  rename_at(
-    vars(as.character(ditems_tble$itemid)),
-    ~str_to_lower(ditems_tble$label)
-  ) %>% 
-  rename(heartrate = 'heart rate', 
-         sbp = 'non invasive blood pressure systolic', 
-         meanbp = 'non invasive blood pressure mean', 
-         resp_rate= 'respiratory rate',
-         temp = 'temperature fahrenheit') %>%
+  left_join(chartevents_tble, by = c("subject_id", "charttime")) %>% 
+  select(-charttime) %>% 
+  ungroup() %>% 
+  pivot_wider(names_from = itemid, names_prefix = "itemid_",
+              values_from = valuenum) %>% 
+  rename(meanbp = 'itemid_220181', 
+         sbp = 'itemid_220179', 
+         temp = 'itemid_223761', 
+         resp_rate= 'itemid_220210',
+         heartrate = 'itemid_220045') %>%
   show_query() %>%
   print(width = Inf)
 ```
