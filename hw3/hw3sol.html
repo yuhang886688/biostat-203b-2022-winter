@@ -360,64 +360,52 @@ admissions_tble &lt;- tbl(con, &quot;admissions&quot;) %&gt;%
 ## # Database: BigQueryConnection
 ##    subject_id  hadm_id admittime           dischtime          
 ##         &lt;int&gt;    &lt;int&gt; &lt;dttm&gt;              &lt;dttm&gt;             
-##  1   13197526 28853425 2111-03-01 02:22:00 2111-03-03 17:30:00
-##  2   15509304 26869731 2189-08-09 05:07:00 2189-08-11 15:00:00
-##  3   11958726 24320913 2117-12-20 13:42:00 2118-01-28 16:30:00
-##  4   16613161 23377835 2156-02-08 19:57:00 2156-02-18 13:02:00
-##  5   17969957 29045054 2181-06-04 19:38:00 2181-06-12 19:05:00
-##  6   15784035 24096846 2137-04-17 18:41:00 2137-04-24 16:14:00
-##  7   14854458 28121109 2174-09-01 19:17:00 2174-09-03 22:30:00
-##  8   14360149 25834248 2176-11-25 17:13:00 2176-12-17 00:00:00
-##  9   15840371 22995174 2187-05-04 20:43:00 2187-05-12 00:00:00
-## 10   18443449 22133024 2157-05-25 14:00:00 2157-05-30 19:07:00
+##  1   13946340 20423027 2181-03-16 15:50:00 2181-03-24 03:03:00
+##  2   16297597 25146493 2127-02-07 00:39:00 2127-02-16 17:55:00
+##  3   10902586 25215925 2155-02-12 17:54:00 2155-02-19 16:30:00
+##  4   16423390 22555943 2138-01-07 14:22:00 2138-01-31 21:35:00
+##  5   11990000 25805051 2183-01-29 14:01:00 2183-02-06 15:24:00
+##  6   13546016 22408998 2119-05-26 07:57:00 2119-05-30 15:59:00
+##  7   13205038 24285099 2161-11-11 21:43:00 2161-12-11 10:42:00
+##  8   16731711 23567649 2110-10-25 18:56:00 2110-11-08 11:35:00
+##  9   16333496 25737846 2175-07-22 15:45:00 2175-07-31 06:58:00
+## 10   11407769 26218529 2188-06-25 04:11:00 2188-06-27 10:30:00
 ##    deathtime           admission_type admission_location    
 ##    &lt;dttm&gt;              &lt;chr&gt;          &lt;chr&gt;                 
-##  1 NA                  URGENT         TRANSFER FROM HOSPITAL
+##  1 2181-03-24 03:03:00 URGENT         TRANSFER FROM HOSPITAL
 ##  2 NA                  URGENT         TRANSFER FROM HOSPITAL
 ##  3 NA                  URGENT         TRANSFER FROM HOSPITAL
-##  4 2156-02-18 13:02:00 URGENT         TRANSFER FROM HOSPITAL
+##  4 2138-01-31 21:35:00 URGENT         TRANSFER FROM HOSPITAL
 ##  5 NA                  URGENT         TRANSFER FROM HOSPITAL
 ##  6 NA                  URGENT         TRANSFER FROM HOSPITAL
 ##  7 NA                  URGENT         TRANSFER FROM HOSPITAL
-##  8 2176-12-17 00:00:00 URGENT         TRANSFER FROM HOSPITAL
-##  9 2187-05-12 00:00:00 URGENT         TRANSFER FROM HOSPITAL
-## 10 NA                  URGENT         TRANSFER FROM HOSPITAL
-##    discharge_location           insurance language marital_status
-##    &lt;chr&gt;                        &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;         
-##  1 HOME HEALTH CARE             Other     ENGLISH  &lt;NA&gt;          
-##  2 HOME                         Other     ENGLISH  &lt;NA&gt;          
-##  3 CHRONIC/LONG TERM ACUTE CARE Medicare  ENGLISH  &lt;NA&gt;          
-##  4 DIED                         Medicaid  ?        &lt;NA&gt;          
-##  5 HOME HEALTH CARE             Medicare  ?        &lt;NA&gt;          
-##  6 HOME HEALTH CARE             Medicare  ?        &lt;NA&gt;          
-##  7 AGAINST ADVICE               Other     ENGLISH  &lt;NA&gt;          
-##  8 DIED                         Medicare  ENGLISH  &lt;NA&gt;          
-##  9 DIED                         Other     ENGLISH  &lt;NA&gt;          
-## 10 HOME HEALTH CARE             Medicare  ENGLISH  &lt;NA&gt;          
-##    ethnicity              edregtime           edouttime          
-##    &lt;chr&gt;                  &lt;dttm&gt;              &lt;dttm&gt;             
-##  1 WHITE                  NA                  NA                 
-##  2 UNKNOWN                2189-08-09 03:51:00 2189-08-09 06:38:00
-##  3 UNKNOWN                NA                  NA                 
-##  4 BLACK/AFRICAN AMERICAN NA                  NA                 
-##  5 UNABLE TO OBTAIN       NA                  NA                 
-##  6 UNKNOWN                NA                  NA                 
-##  7 UNKNOWN                NA                  NA                 
-##  8 BLACK/AFRICAN AMERICAN NA                  NA                 
-##  9 UNKNOWN                NA                  NA                 
-## 10 WHITE                  NA                  NA                 
-##    hospital_expire_flag
-##                   &lt;int&gt;
-##  1                    0
-##  2                    0
-##  3                    0
-##  4                    1
-##  5                    0
-##  6                    0
-##  7                    0
-##  8                    1
-##  9                    1
-## 10                    0
+##  8 2110-11-08 11:35:00 URGENT         TRANSFER FROM HOSPITAL
+##  9 2175-07-31 06:58:00 URGENT         TRANSFER FROM HOSPITAL
+## 10 2188-06-27 10:30:00 URGENT         TRANSFER FROM HOSPITAL
+##    discharge_location           insurance language marital_status ethnicity
+##    &lt;chr&gt;                        &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;          &lt;chr&gt;    
+##  1 DIED                         Medicare  ENGLISH  &lt;NA&gt;           WHITE    
+##  2 HOME HEALTH CARE             Medicare  ENGLISH  &lt;NA&gt;           UNKNOWN  
+##  3 HOME HEALTH CARE             Other     ENGLISH  &lt;NA&gt;           UNKNOWN  
+##  4 DIED                         Other     ENGLISH  &lt;NA&gt;           UNKNOWN  
+##  5 CHRONIC/LONG TERM ACUTE CARE Medicare  ENGLISH  &lt;NA&gt;           WHITE    
+##  6 SKILLED NURSING FACILITY     Medicare  ENGLISH  &lt;NA&gt;           UNKNOWN  
+##  7 REHAB                        Other     ?        &lt;NA&gt;           UNKNOWN  
+##  8 DIED                         Medicare  ENGLISH  &lt;NA&gt;           UNKNOWN  
+##  9 DIED                         Medicare  ENGLISH  &lt;NA&gt;           UNKNOWN  
+## 10 DIED                         Other     ENGLISH  &lt;NA&gt;           UNKNOWN  
+##    edregtime           edouttime           hospital_expire_flag
+##    &lt;dttm&gt;              &lt;dttm&gt;                             &lt;int&gt;
+##  1 NA                  NA                                     1
+##  2 NA                  NA                                     0
+##  3 NA                  NA                                     0
+##  4 NA                  NA                                     1
+##  5 NA                  NA                                     0
+##  6 NA                  NA                                     0
+##  7 NA                  NA                                     0
+##  8 NA                  NA                                     1
+##  9 NA                  NA                                     1
+## 10 2188-06-25 02:28:00 2188-06-25 05:25:00                    1
 ## # … with more rows</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Connect to the <code>patients</code> table and only keep the patients who have a match in <code>icustays_tble</code> (according to <code>subject_id</code>).</li>
@@ -459,16 +447,38 @@ patients_tble &lt;- tbl(con, &quot;patients&quot;) %&gt;%
 <li>Connect to the <code>labevents</code> table and retrieve a subset that only contain subjects who appear in <code>icustays_tble</code> and the lab items listed in HW2.</li>
 </ol>
 <pre class="r"><code># # TODO
-labevents_tble &lt;- tbl(con, &quot;labevents&quot;) %&gt;% 
-  semi_join(icustays_tble, by = &quot;subject_id&quot;) %&gt;% 
+dlabitems_tble &lt;- tbl(con, &quot;d_labitems&quot;) %&gt;%
   filter(itemid %in% c(50912, 50971, 50983, 50902, 50882, 
                        51221, 51301, 50931, 50960, 50893)) %&gt;%
-  select(subject_id, itemid, charttime, valuenum) %&gt;%
   show_query() %&gt;%
   print(width = Inf)</code></pre>
 <pre><code>## &lt;SQL&gt;
-## SELECT `subject_id`, `itemid`, `charttime`, `valuenum`
-## FROM (SELECT * FROM `labevents` AS `LHS`
+## SELECT *
+## FROM `d_labitems`
+## WHERE (`itemid` IN (50912.0, 50971.0, 50983.0, 50902.0, 50882.0, 51221.0, 51301.0, 50931.0, 50960.0, 50893.0))
+## # Source:   lazy query [?? x 5]
+## # Database: BigQueryConnection
+##    itemid label             fluid category   loinc_code
+##     &lt;int&gt; &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;     
+##  1  50882 Bicarbonate       Blood Chemistry  1963-8    
+##  2  50893 Calcium, Total    Blood Chemistry  2000-8    
+##  3  50902 Chloride          Blood Chemistry  2075-0    
+##  4  50912 Creatinine        Blood Chemistry  2160-0    
+##  5  50931 Glucose           Blood Chemistry  6777-7    
+##  6  50960 Magnesium         Blood Chemistry  2601-3    
+##  7  50971 Potassium         Blood Chemistry  2823-3    
+##  8  50983 Sodium            Blood Chemistry  2951-2    
+##  9  51221 Hematocrit        Blood Hematology 4544-3    
+## 10  51301 White Blood Cells Blood Hematology 804-5</code></pre>
+<pre class="r"><code>labevents_tble &lt;- tbl(con, &quot;labevents&quot;) %&gt;% 
+  select(subject_id, itemid, charttime, valuenum) %&gt;%
+  semi_join(icustays_tble, by = &quot;subject_id&quot;) %&gt;% 
+  semi_join(dlabitems_tble, by=&quot;itemid&quot;) %&gt;%
+  show_query() %&gt;%
+  print(width = Inf)</code></pre>
+<pre><code>## &lt;SQL&gt;
+## SELECT * FROM (SELECT * FROM (SELECT `subject_id`, `itemid`, `charttime`, `valuenum`
+## FROM `labevents`) `LHS`
 ## WHERE EXISTS (
 ##   SELECT 1 FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`intime` AS `intime`, `hadm_id`, `stay_id`, `first_careunit`, `last_careunit`, `outtime`, `los`
 ## FROM (SELECT `subject_id`, MIN(`intime`) AS `intime`
@@ -479,53 +489,63 @@ labevents_tble &lt;- tbl(con, &quot;labevents&quot;) %&gt;%
 ## ON (`LHS`.`subject_id` = `RHS`.`subject_id` AND `LHS`.`intime` = `RHS`.`intime`)
 ## ) `RHS`
 ##   WHERE (`LHS`.`subject_id` = `RHS`.`subject_id`)
-## )) `q01`
-## WHERE (`itemid` IN (50912.0, 50971.0, 50983.0, 50902.0, 50882.0, 51221.0, 51301.0, 50931.0, 50960.0, 50893.0))
+## )) `LHS`
+## WHERE EXISTS (
+##   SELECT 1 FROM (SELECT *
+## FROM `d_labitems`
+## WHERE (`itemid` IN (50912.0, 50971.0, 50983.0, 50902.0, 50882.0, 51221.0, 51301.0, 50931.0, 50960.0, 50893.0))) `RHS`
+##   WHERE (`LHS`.`itemid` = `RHS`.`itemid`)
+## )
 ## # Source:   lazy query [?? x 4]
 ## # Database: BigQueryConnection
 ##    subject_id itemid charttime           valuenum
 ##         &lt;int&gt;  &lt;int&gt; &lt;dttm&gt;                 &lt;dbl&gt;
-##  1   10004235  51301 2196-06-15 06:04:00     11  
-##  2   10004235  51301 2196-06-20 23:55:00     15.1
-##  3   10005348  50971 2130-10-28 21:18:00      3.5
-##  4   10019003  50912 2155-10-17 10:02:00      1.3
-##  5   10035168  50960 2144-12-31 00:30:00      1.5
-##  6   10035168  50893 2145-10-19 00:30:00      7.5
-##  7   10035631  50912 2113-08-28 07:07:00      0.8
-##  8   10035631  50893 2114-07-07 12:55:00      9.7
-##  9   10035631  50882 2115-11-14 00:04:00     21  
-## 10   10035631  51221 2116-01-05 10:20:00     39.5
+##  1   10005348  50912 2128-09-09 10:50:00      0.8
+##  2   10007677  50882 2120-11-23 13:39:00     23  
+##  3   10007677  50882 2120-12-06 16:00:00     24  
+##  4   10007677  50882 2120-12-14 08:16:00     28  
+##  5   10019003  51221 2153-10-06 12:50:00     33.3
+##  6   10019992  50960 2140-09-17 03:48:00      2.1
+##  7   10020852  50931 2164-10-29 12:30:00     84  
+##  8   10023708  50912 2145-01-25 09:00:00      0.7
+##  9   10031358  50912 2156-09-10 08:15:00      1.1
+## 10   10031358  51221 2157-10-20 07:50:00     32.9
 ## # … with more rows</code></pre>
 <p>Only keep the first lab measurements during ICU stay and pivot lab items to become variables/columns.</p>
 <pre class="r"><code># # TODO
-labevents_tble &lt;- labevents_tble %&gt;%
-  left_join(icustays_tble, by = c(&quot;subject_id&quot;)) %&gt;% 
-  filter(charttime &gt;= intime) %&gt;%
-  select(subject_id, charttime) %&gt;%
-  group_by(subject_id) %&gt;% 
-    summarise_all(min) %&gt;%
-  left_join(labevents_tble, by = c(&quot;subject_id&quot;, &quot;charttime&quot;)) %&gt;% 
-  select(-charttime) %&gt;% 
+labevents_tble &lt;- labevents_tble %&gt;% 
+  left_join(select(icustays_tble, subject_id, intime, outtime),
+            by = &quot;subject_id&quot;) %&gt;% 
+  filter(charttime &gt;= intime &amp; charttime &lt;= outtime) %&gt;%
+  select(subject_id, itemid, charttime) %&gt;%
+  group_by(subject_id, itemid) %&gt;% 
+ summarise_all(min) %&gt;%
+  left_join(labevents_tble, by = c(&quot;subject_id&quot;, &quot;itemid&quot;, &quot;charttime&quot;)) %&gt;% 
+  select(subject_id, itemid, valuenum) %&gt;% 
   ungroup() %&gt;% 
-  pivot_wider(names_from = itemid, names_prefix = &quot;itemid_&quot;,
-              values_from = valuenum) %&gt;%
-  rename(calcium = &quot;itemid_50893&quot;, magnesium = &quot;itemid_50960&quot;,
-         potassium = &quot;itemid_50971&quot;, chloride = &quot;itemid_50902&quot;,
-         sodium = &quot;itemid_50983&quot;, creatinine = &quot;itemid_50912&quot;,
-         bicarbonate = &quot;itemid_50882&quot;, glucose = &quot;itemid_50931&quot;,
-         hematocrit = &quot;itemid_51221&quot;, wbc = &quot;itemid_51301&quot;) %&gt;%
+  pivot_wider(names_from = itemid, values_from = valuenum) %&gt;%
+  rename(creatinine = &#39;50912&#39;, 
+         potassium = &#39;50971&#39;, 
+         sodium = &#39;50983&#39;,
+         chloride = &#39;50902&#39;,
+         bicarbonate = &#39;50882&#39;, 
+         hematocrit = &#39;51221&#39;,
+         wbc = &#39;51301&#39;, 
+         glucose = &#39;50931&#39;, 
+         magnesium = &#39;50960&#39;, 
+         calcium = &#39;50893&#39;) %&gt;%
   show_query() %&gt;%
   print(width = Inf)</code></pre>
 <pre><code>## &lt;SQL&gt;
-## SELECT `subject_id`, `itemid_50882` AS `bicarbonate`, `itemid_51301` AS `wbc`, `itemid_51221` AS `hematocrit`, `itemid_50912` AS `creatinine`, `itemid_50971` AS `potassium`, `itemid_50931` AS `glucose`, `itemid_50902` AS `chloride`, `itemid_50983` AS `sodium`, `itemid_50960` AS `magnesium`, `itemid_50893` AS `calcium`
-## FROM (SELECT `subject_id`, MAX(IF(`itemid` = 50882, `valuenum`, NULL)) AS `itemid_50882`, MAX(IF(`itemid` = 51301, `valuenum`, NULL)) AS `itemid_51301`, MAX(IF(`itemid` = 51221, `valuenum`, NULL)) AS `itemid_51221`, MAX(IF(`itemid` = 50912, `valuenum`, NULL)) AS `itemid_50912`, MAX(IF(`itemid` = 50971, `valuenum`, NULL)) AS `itemid_50971`, MAX(IF(`itemid` = 50931, `valuenum`, NULL)) AS `itemid_50931`, MAX(IF(`itemid` = 50902, `valuenum`, NULL)) AS `itemid_50902`, MAX(IF(`itemid` = 50983, `valuenum`, NULL)) AS `itemid_50983`, MAX(IF(`itemid` = 50960, `valuenum`, NULL)) AS `itemid_50960`, MAX(IF(`itemid` = 50893, `valuenum`, NULL)) AS `itemid_50893`
+## SELECT `subject_id`, `50902` AS `chloride`, `50971` AS `potassium`, `50882` AS `bicarbonate`, `50960` AS `magnesium`, `51221` AS `hematocrit`, `50912` AS `creatinine`, `50983` AS `sodium`, `51301` AS `wbc`, `50893` AS `calcium`, `50931` AS `glucose`
+## FROM (SELECT `subject_id`, MAX(IF(`itemid` = 50902, `valuenum`, NULL)) AS `50902`, MAX(IF(`itemid` = 50971, `valuenum`, NULL)) AS `50971`, MAX(IF(`itemid` = 50882, `valuenum`, NULL)) AS `50882`, MAX(IF(`itemid` = 50960, `valuenum`, NULL)) AS `50960`, MAX(IF(`itemid` = 51221, `valuenum`, NULL)) AS `51221`, MAX(IF(`itemid` = 50912, `valuenum`, NULL)) AS `50912`, MAX(IF(`itemid` = 50983, `valuenum`, NULL)) AS `50983`, MAX(IF(`itemid` = 51301, `valuenum`, NULL)) AS `51301`, MAX(IF(`itemid` = 50893, `valuenum`, NULL)) AS `50893`, MAX(IF(`itemid` = 50931, `valuenum`, NULL)) AS `50931`
 ## FROM (SELECT `subject_id`, `itemid`, `valuenum`
-## FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`charttime` AS `charttime`, `itemid`, `valuenum`
-## FROM (SELECT `subject_id`, MIN(`charttime`) AS `charttime`
-## FROM (SELECT `subject_id`, `charttime`
-## FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `itemid`, `charttime`, `valuenum`, `intime`, `hadm_id`, `stay_id`, `first_careunit`, `last_careunit`, `outtime`, `los`
-## FROM (SELECT `subject_id`, `itemid`, `charttime`, `valuenum`
-## FROM (SELECT * FROM `labevents` AS `LHS`
+## FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`itemid` AS `itemid`, `LHS`.`charttime` AS `charttime`, `valuenum`
+## FROM (SELECT `subject_id`, `itemid`, MIN(`charttime`) AS `charttime`
+## FROM (SELECT `subject_id`, `itemid`, `charttime`
+## FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `itemid`, `charttime`, `valuenum`, `intime`, `outtime`
+## FROM (SELECT * FROM (SELECT * FROM (SELECT `subject_id`, `itemid`, `charttime`, `valuenum`
+## FROM `labevents`) `LHS`
 ## WHERE EXISTS (
 ##   SELECT 1 FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`intime` AS `intime`, `hadm_id`, `stay_id`, `first_careunit`, `last_careunit`, `outtime`, `los`
 ## FROM (SELECT `subject_id`, MIN(`intime`) AS `intime`
@@ -536,77 +556,112 @@ labevents_tble &lt;- labevents_tble %&gt;%
 ## ON (`LHS`.`subject_id` = `RHS`.`subject_id` AND `LHS`.`intime` = `RHS`.`intime`)
 ## ) `RHS`
 ##   WHERE (`LHS`.`subject_id` = `RHS`.`subject_id`)
-## )) `q01`
-## WHERE (`itemid` IN (50912.0, 50971.0, 50983.0, 50902.0, 50882.0, 51221.0, 51301.0, 50931.0, 50960.0, 50893.0))) `LHS`
-## LEFT JOIN (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`intime` AS `intime`, `hadm_id`, `stay_id`, `first_careunit`, `last_careunit`, `outtime`, `los`
-## FROM (SELECT `subject_id`, MIN(`intime`) AS `intime`
-## FROM (SELECT `subject_id`, `intime`
-## FROM `icustays`) `q01`
-## GROUP BY `subject_id`) `LHS`
-## LEFT JOIN `icustays` AS `RHS`
-## ON (`LHS`.`subject_id` = `RHS`.`subject_id` AND `LHS`.`intime` = `RHS`.`intime`)
-## ) `RHS`
-## ON (`LHS`.`subject_id` = `RHS`.`subject_id`)
-## ) `q01`
-## WHERE (`charttime` &gt;= `intime`)) `q02`
-## GROUP BY `subject_id`) `LHS`
-## LEFT JOIN (SELECT `subject_id`, `itemid`, `charttime`, `valuenum`
-## FROM (SELECT * FROM `labevents` AS `LHS`
+## )) `LHS`
 ## WHERE EXISTS (
-##   SELECT 1 FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`intime` AS `intime`, `hadm_id`, `stay_id`, `first_careunit`, `last_careunit`, `outtime`, `los`
-## FROM (SELECT `subject_id`, MIN(`intime`) AS `intime`
-## FROM (SELECT `subject_id`, `intime`
-## FROM `icustays`) `q01`
-## GROUP BY `subject_id`) `LHS`
-## LEFT JOIN `icustays` AS `RHS`
-## ON (`LHS`.`subject_id` = `RHS`.`subject_id` AND `LHS`.`intime` = `RHS`.`intime`)
-## ) `RHS`
-##   WHERE (`LHS`.`subject_id` = `RHS`.`subject_id`)
-## )) `q01`
+##   SELECT 1 FROM (SELECT *
+## FROM `d_labitems`
 ## WHERE (`itemid` IN (50912.0, 50971.0, 50983.0, 50902.0, 50882.0, 51221.0, 51301.0, 50931.0, 50960.0, 50893.0))) `RHS`
-## ON (`LHS`.`subject_id` = `RHS`.`subject_id` AND `LHS`.`charttime` = `RHS`.`charttime`)
-## ) `q02`) `q03`
-## GROUP BY `subject_id`) `q04`
+##   WHERE (`LHS`.`itemid` = `RHS`.`itemid`)
+## )) `LHS`
+## LEFT JOIN (SELECT `subject_id`, `intime`, `outtime`
+## FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`intime` AS `intime`, `hadm_id`, `stay_id`, `first_careunit`, `last_careunit`, `outtime`, `los`
+## FROM (SELECT `subject_id`, MIN(`intime`) AS `intime`
+## FROM (SELECT `subject_id`, `intime`
+## FROM `icustays`) `q01`
+## GROUP BY `subject_id`) `LHS`
+## LEFT JOIN `icustays` AS `RHS`
+## ON (`LHS`.`subject_id` = `RHS`.`subject_id` AND `LHS`.`intime` = `RHS`.`intime`)
+## ) `q01`) `RHS`
+## ON (`LHS`.`subject_id` = `RHS`.`subject_id`)
+## ) `q02`
+## WHERE (`charttime` &gt;= `intime` AND `charttime` &lt;= `outtime`)) `q03`
+## GROUP BY `subject_id`, `itemid`) `LHS`
+## LEFT JOIN (SELECT * FROM (SELECT * FROM (SELECT `subject_id`, `itemid`, `charttime`, `valuenum`
+## FROM `labevents`) `LHS`
+## WHERE EXISTS (
+##   SELECT 1 FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`intime` AS `intime`, `hadm_id`, `stay_id`, `first_careunit`, `last_careunit`, `outtime`, `los`
+## FROM (SELECT `subject_id`, MIN(`intime`) AS `intime`
+## FROM (SELECT `subject_id`, `intime`
+## FROM `icustays`) `q01`
+## GROUP BY `subject_id`) `LHS`
+## LEFT JOIN `icustays` AS `RHS`
+## ON (`LHS`.`subject_id` = `RHS`.`subject_id` AND `LHS`.`intime` = `RHS`.`intime`)
+## ) `RHS`
+##   WHERE (`LHS`.`subject_id` = `RHS`.`subject_id`)
+## )) `LHS`
+## WHERE EXISTS (
+##   SELECT 1 FROM (SELECT *
+## FROM `d_labitems`
+## WHERE (`itemid` IN (50912.0, 50971.0, 50983.0, 50902.0, 50882.0, 51221.0, 51301.0, 50931.0, 50960.0, 50893.0))) `RHS`
+##   WHERE (`LHS`.`itemid` = `RHS`.`itemid`)
+## )) `RHS`
+## ON (`LHS`.`subject_id` = `RHS`.`subject_id` AND `LHS`.`itemid` = `RHS`.`itemid` AND `LHS`.`charttime` = `RHS`.`charttime`)
+## ) `q01`) `q02`
+## GROUP BY `subject_id`) `q03`
 ## # Source:   lazy query [?? x 11]
 ## # Database: BigQueryConnection
-##    subject_id bicarbonate   wbc hematocrit creatinine potassium glucose chloride
-##         &lt;int&gt;       &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
-##  1   10005348          22  18.1       26.8        0.8       4.1      NA      111
-##  2   10911778          19  11.1       24.3        1.3       4.1     134      105
-##  3   12288178          24   9.3       31.7        0.8       4.1     172      104
-##  4   12999347          NA  NA         NA         NA         5.3      NA      103
-##  5   13729540          NA  10.3       22.2       NA        NA        NA       NA
-##  6   14446826          17  16.7       41.7        3         4.2     130      135
-##  7   14685940          26   3.2       36.6        0.9       3.7     175      111
-##  8   15191472          NA  NA         35.4       NA        NA        NA       NA
-##  9   15717895          NA  NA         NA         NA         4.6      NA       NA
-## 10   15789651          21  12.3       29.3        1.1       3.7     231       94
-##    sodium magnesium calcium
-##     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-##  1    139      NA      NA  
-##  2    139       2       9.2
-##  3    140       2.2     8.5
-##  4    138      NA      NA  
-##  5     NA      NA      NA  
-##  6    171       3.5     7  
-##  7    143       2       7.6
-##  8     NA      NA      NA  
-##  9     NA      NA      NA  
-## 10    130       2.9     8.6
+##    subject_id chloride potassium bicarbonate magnesium hematocrit creatinine
+##         &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+##  1   10222191      101       6.4          12       1.8       49.9        5.2
+##  2   11550469      100       4.7          27       1.6       41.5        0.9
+##  3   15539774      102       4.4          18       2.3       31.3        1.9
+##  4   16603630      103       4.5          25       1.9       36.1        1.1
+##  5   16855768       97       3.2          27       1.6       24.7        0.5
+##  6   19834200       93       4.9          24       2.3       29.5        1.1
+##  7   10924501      106       4.5          19       2         34.6        1.5
+##  8   11961271      105       4.1          23       1.8       24.9        0.8
+##  9   12662773      108       3.3          27       1.9       26.1        0.5
+## 10   12750983      103       3.4          34       2         35.3        0.7
+##    sodium   wbc calcium glucose
+##     &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+##  1    131  19.8     3.7     148
+##  2    136  12.5     9.5     198
+##  3    134   9.6     7.7     117
+##  4    133  12.1     8.4     200
+##  5    135   9.5     8.4      93
+##  6    130  27.8     7.8     116
+##  7    138  11.7     8.8     182
+##  8    139  13.1     7.9      88
+##  9    142  21.6     7.7     198
+## 10    143   9.4     8.5     146
 ## # … with more rows</code></pre>
 <ol start="7" style="list-style-type: decimal">
 <li>Connect to <code>chartevents</code> table and retrieve a subset that only contain subjects who appear in <code>icustays_tble</code> and the chart events listed in HW2.</li>
 </ol>
 <pre class="r"><code># # TODO
-chartevents_tble &lt;- tbl(con, &quot;chartevents&quot;) %&gt;%
-  semi_join(icustays_tble, by = &quot;subject_id&quot;) %&gt;% 
+ditems_tble &lt;- tbl(con, &quot;d_items&quot;) %&gt;%
   filter(itemid %in% c(220045, 220181, 220179, 223761, 220210)) %&gt;%
+  show_query() %&gt;%
+  print(width = Inf)</code></pre>
+<pre><code>## &lt;SQL&gt;
+## SELECT *
+## FROM `d_items`
+## WHERE (`itemid` IN (220045.0, 220181.0, 220179.0, 223761.0, 220210.0))
+## # Source:   lazy query [?? x 9]
+## # Database: BigQueryConnection
+##   itemid label                                abbreviation  linksto    
+##    &lt;int&gt; &lt;chr&gt;                                &lt;chr&gt;         &lt;chr&gt;      
+## 1 220210 Respiratory Rate                     RR            chartevents
+## 2 220045 Heart Rate                           HR            chartevents
+## 3 220179 Non Invasive Blood Pressure systolic NBPs          chartevents
+## 4 220181 Non Invasive Blood Pressure mean     NBPm          chartevents
+## 5 223761 Temperature Fahrenheit               Temperature F chartevents
+##   category            unitname param_type lownormalvalue highnormalvalue
+##   &lt;chr&gt;               &lt;chr&gt;    &lt;chr&gt;               &lt;dbl&gt;           &lt;dbl&gt;
+## 1 Respiratory         insp/min Numeric                NA              NA
+## 2 Routine Vital Signs bpm      Numeric                NA              NA
+## 3 Routine Vital Signs mmHg     Numeric                NA              NA
+## 4 Routine Vital Signs mmHg     Numeric                NA              NA
+## 5 Routine Vital Signs °F       Numeric                NA              NA</code></pre>
+<pre class="r"><code>chartevents_tble &lt;- tbl(con, &quot;chartevents&quot;) %&gt;%
+  semi_join(icustays_tble, by = &quot;subject_id&quot;) %&gt;% 
+  semi_join(ditems_tble, by = &quot;itemid&quot;) %&gt;%
   select(subject_id, hadm_id, stay_id, charttime, itemid, valuenum) %&gt;%
   show_query() %&gt;%
   print(width = Inf)</code></pre>
 <pre><code>## &lt;SQL&gt;
 ## SELECT `subject_id`, `hadm_id`, `stay_id`, `charttime`, `itemid`, `valuenum`
-## FROM (SELECT * FROM `chartevents` AS `LHS`
+## FROM (SELECT * FROM (SELECT * FROM `chartevents` AS `LHS`
 ## WHERE EXISTS (
 ##   SELECT 1 FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`intime` AS `intime`, `hadm_id`, `stay_id`, `first_careunit`, `last_careunit`, `outtime`, `los`
 ## FROM (SELECT `subject_id`, MIN(`intime`) AS `intime`
@@ -617,53 +672,58 @@ chartevents_tble &lt;- tbl(con, &quot;chartevents&quot;) %&gt;%
 ## ON (`LHS`.`subject_id` = `RHS`.`subject_id` AND `LHS`.`intime` = `RHS`.`intime`)
 ## ) `RHS`
 ##   WHERE (`LHS`.`subject_id` = `RHS`.`subject_id`)
+## )) `LHS`
+## WHERE EXISTS (
+##   SELECT 1 FROM (SELECT *
+## FROM `d_items`
+## WHERE (`itemid` IN (220045.0, 220181.0, 220179.0, 223761.0, 220210.0))) `RHS`
+##   WHERE (`LHS`.`itemid` = `RHS`.`itemid`)
 ## )) `q01`
-## WHERE (`itemid` IN (220045.0, 220181.0, 220179.0, 223761.0, 220210.0))
 ## # Source:   lazy query [?? x 6]
 ## # Database: BigQueryConnection
 ##    subject_id  hadm_id  stay_id charttime           itemid valuenum
 ##         &lt;int&gt;    &lt;int&gt;    &lt;int&gt; &lt;dttm&gt;               &lt;int&gt;    &lt;dbl&gt;
-##  1   10550641 22324923 30752142 2129-04-19 11:00:00 223761     96.3
-##  2   18275245 22999142 33032447 2128-04-27 06:00:00 223761     97.3
-##  3   11771169 25229192 34395507 2129-04-30 04:00:00 223761     98.6
-##  4   12340484 28903432 34901043 2125-12-26 16:00:00 223761    101. 
-##  5   14503479 29490518 36847573 2187-02-01 01:00:00 223761     99.7
-##  6   19830515 24157504 39402814 2144-01-12 08:00:00 223761     97.3
-##  7   10532095 24112824 32344219 2186-04-13 18:00:00 223761     98  
-##  8   12532250 24475713 36865163 2129-10-07 13:00:00 223761     97.4
-##  9   14741136 29139799 35026051 2184-11-14 12:00:00 223761     96.4
-## 10   13996984 27085367 30471773 2188-12-28 04:00:00 223761     98.7
+##  1   12719912 26680768 37451821 2146-05-15 16:00:00 223761    101. 
+##  2   14689985 23559422 34798951 2175-04-29 12:00:00 223761     96.8
+##  3   15416816 29459835 38002274 2161-05-04 10:15:00 223761     98.2
+##  4   16018004 24338188 32518487 2136-05-05 16:00:00 223761     97.4
+##  5   11049412 21646090 30596175 2129-11-07 16:00:00 223761     98.8
+##  6   12261485 21479515 39525817 2132-04-02 01:27:00 223761     99.8
+##  7   12350277 25055035 37120579 2173-08-11 21:00:00 223761     92.5
+##  8   15124644 29850599 32557967 2169-11-16 08:00:00 223761     97.7
+##  9   18633532 26885518 35727421 2114-08-28 03:00:00 223761     98.3
+## 10   19557250 22628036 33493342 2169-01-13 10:00:00 223761     99.8
 ## # … with more rows</code></pre>
 <p>Only keep the first chart events during ICU stay and pivot chart events to become variables/columns.</p>
 <pre class="r"><code># # TODO
 chartevents_tble &lt;- chartevents_tble %&gt;%
-  left_join(icustays_tble, by = c(&quot;subject_id&quot;)) %&gt;%
-  filter(charttime &gt;= intime) %&gt;% 
-  select(subject_id, charttime) %&gt;%
-  group_by(subject_id) %&gt;% 
-    summarise_all(min) %&gt;% 
-  left_join(chartevents_tble, by = c(&quot;subject_id&quot;, &quot;charttime&quot;)) %&gt;% 
-  select(-charttime) %&gt;% 
+  left_join(select(icustays_tble, subject_id, intime, outtime),
+            by = &quot;subject_id&quot;) %&gt;% 
+  filter(charttime &gt;= intime &amp; charttime &lt;= outtime) %&gt;%
+  select(subject_id, itemid, charttime) %&gt;%
+  group_by(subject_id, itemid) %&gt;% 
+ summarise_all(min) %&gt;%
+  left_join(chartevents_tble, by = c(&quot;subject_id&quot;, &quot;itemid&quot;, &quot;charttime&quot;)) %&gt;% 
+  select(subject_id, hadm_id, stay_id, itemid, valuenum) %&gt;% 
   ungroup() %&gt;% 
-  pivot_wider(names_from = itemid, names_prefix = &quot;itemid_&quot;,
-              values_from = valuenum) %&gt;% 
-  rename(meanbp = &#39;itemid_220181&#39;, 
-         sbp = &#39;itemid_220179&#39;, 
-         temp = &#39;itemid_223761&#39;, 
-         resp_rate= &#39;itemid_220210&#39;,
-         heartrate = &#39;itemid_220045&#39;) %&gt;%
+  pivot_wider(names_from = itemid, values_from = valuenum) %&gt;% 
+  rename(heartrate = &#39;220045&#39;,
+         meanbp = &#39;220181&#39;, 
+         sbp = &#39;220179&#39;, 
+         temp = &#39;223761&#39;, 
+         resp_rate = &#39;220210&#39;) %&gt;%
   show_query() %&gt;%
   print(width = Inf)</code></pre>
 <pre><code>## &lt;SQL&gt;
-## SELECT `subject_id`, `hadm_id`, `stay_id`, `itemid_220181` AS `meanbp`, `itemid_220210` AS `resp_rate`, `itemid_220045` AS `heartrate`, `itemid_223761` AS `temp`, `itemid_220179` AS `sbp`
-## FROM (SELECT `subject_id`, `hadm_id`, `stay_id`, MAX(IF(`itemid` = 220181, `valuenum`, NULL)) AS `itemid_220181`, MAX(IF(`itemid` = 220210, `valuenum`, NULL)) AS `itemid_220210`, MAX(IF(`itemid` = 220045, `valuenum`, NULL)) AS `itemid_220045`, MAX(IF(`itemid` = 223761, `valuenum`, NULL)) AS `itemid_223761`, MAX(IF(`itemid` = 220179, `valuenum`, NULL)) AS `itemid_220179`
+## SELECT `subject_id`, `hadm_id`, `stay_id`, `220181` AS `meanbp`, `220210` AS `resp_rate`, `220045` AS `heartrate`, `223761` AS `temp`, `220179` AS `sbp`
+## FROM (SELECT `subject_id`, `hadm_id`, `stay_id`, MAX(IF(`itemid` = 220181, `valuenum`, NULL)) AS `220181`, MAX(IF(`itemid` = 220210, `valuenum`, NULL)) AS `220210`, MAX(IF(`itemid` = 220045, `valuenum`, NULL)) AS `220045`, MAX(IF(`itemid` = 223761, `valuenum`, NULL)) AS `223761`, MAX(IF(`itemid` = 220179, `valuenum`, NULL)) AS `220179`
 ## FROM (SELECT `subject_id`, `hadm_id`, `stay_id`, `itemid`, `valuenum`
-## FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`charttime` AS `charttime`, `hadm_id`, `stay_id`, `itemid`, `valuenum`
-## FROM (SELECT `subject_id`, MIN(`charttime`) AS `charttime`
-## FROM (SELECT `subject_id`, `charttime`
-## FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`hadm_id` AS `hadm_id_x`, `LHS`.`stay_id` AS `stay_id_x`, `charttime`, `itemid`, `valuenum`, `intime`, `RHS`.`hadm_id` AS `hadm_id_y`, `RHS`.`stay_id` AS `stay_id_y`, `first_careunit`, `last_careunit`, `outtime`, `los`
+## FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`itemid` AS `itemid`, `LHS`.`charttime` AS `charttime`, `hadm_id`, `stay_id`, `valuenum`
+## FROM (SELECT `subject_id`, `itemid`, MIN(`charttime`) AS `charttime`
+## FROM (SELECT `subject_id`, `itemid`, `charttime`
+## FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `hadm_id`, `stay_id`, `charttime`, `itemid`, `valuenum`, `intime`, `outtime`
 ## FROM (SELECT `subject_id`, `hadm_id`, `stay_id`, `charttime`, `itemid`, `valuenum`
-## FROM (SELECT * FROM `chartevents` AS `LHS`
+## FROM (SELECT * FROM (SELECT * FROM `chartevents` AS `LHS`
 ## WHERE EXISTS (
 ##   SELECT 1 FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`intime` AS `intime`, `hadm_id`, `stay_id`, `first_careunit`, `last_careunit`, `outtime`, `los`
 ## FROM (SELECT `subject_id`, MIN(`intime`) AS `intime`
@@ -674,51 +734,62 @@ chartevents_tble &lt;- chartevents_tble %&gt;%
 ## ON (`LHS`.`subject_id` = `RHS`.`subject_id` AND `LHS`.`intime` = `RHS`.`intime`)
 ## ) `RHS`
 ##   WHERE (`LHS`.`subject_id` = `RHS`.`subject_id`)
-## )) `q01`
-## WHERE (`itemid` IN (220045.0, 220181.0, 220179.0, 223761.0, 220210.0))) `LHS`
-## LEFT JOIN (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`intime` AS `intime`, `hadm_id`, `stay_id`, `first_careunit`, `last_careunit`, `outtime`, `los`
-## FROM (SELECT `subject_id`, MIN(`intime`) AS `intime`
-## FROM (SELECT `subject_id`, `intime`
-## FROM `icustays`) `q01`
-## GROUP BY `subject_id`) `LHS`
-## LEFT JOIN `icustays` AS `RHS`
-## ON (`LHS`.`subject_id` = `RHS`.`subject_id` AND `LHS`.`intime` = `RHS`.`intime`)
-## ) `RHS`
-## ON (`LHS`.`subject_id` = `RHS`.`subject_id`)
-## ) `q01`
-## WHERE (`charttime` &gt;= `intime`)) `q02`
-## GROUP BY `subject_id`) `LHS`
-## LEFT JOIN (SELECT `subject_id`, `hadm_id`, `stay_id`, `charttime`, `itemid`, `valuenum`
-## FROM (SELECT * FROM `chartevents` AS `LHS`
+## )) `LHS`
 ## WHERE EXISTS (
-##   SELECT 1 FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`intime` AS `intime`, `hadm_id`, `stay_id`, `first_careunit`, `last_careunit`, `outtime`, `los`
-## FROM (SELECT `subject_id`, MIN(`intime`) AS `intime`
-## FROM (SELECT `subject_id`, `intime`
-## FROM `icustays`) `q01`
-## GROUP BY `subject_id`) `LHS`
-## LEFT JOIN `icustays` AS `RHS`
-## ON (`LHS`.`subject_id` = `RHS`.`subject_id` AND `LHS`.`intime` = `RHS`.`intime`)
-## ) `RHS`
-##   WHERE (`LHS`.`subject_id` = `RHS`.`subject_id`)
-## )) `q01`
+##   SELECT 1 FROM (SELECT *
+## FROM `d_items`
 ## WHERE (`itemid` IN (220045.0, 220181.0, 220179.0, 223761.0, 220210.0))) `RHS`
-## ON (`LHS`.`subject_id` = `RHS`.`subject_id` AND `LHS`.`charttime` = `RHS`.`charttime`)
+##   WHERE (`LHS`.`itemid` = `RHS`.`itemid`)
+## )) `q01`) `LHS`
+## LEFT JOIN (SELECT `subject_id`, `intime`, `outtime`
+## FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`intime` AS `intime`, `hadm_id`, `stay_id`, `first_careunit`, `last_careunit`, `outtime`, `los`
+## FROM (SELECT `subject_id`, MIN(`intime`) AS `intime`
+## FROM (SELECT `subject_id`, `intime`
+## FROM `icustays`) `q01`
+## GROUP BY `subject_id`) `LHS`
+## LEFT JOIN `icustays` AS `RHS`
+## ON (`LHS`.`subject_id` = `RHS`.`subject_id` AND `LHS`.`intime` = `RHS`.`intime`)
+## ) `q01`) `RHS`
+## ON (`LHS`.`subject_id` = `RHS`.`subject_id`)
+## ) `q02`
+## WHERE (`charttime` &gt;= `intime` AND `charttime` &lt;= `outtime`)) `q03`
+## GROUP BY `subject_id`, `itemid`) `LHS`
+## LEFT JOIN (SELECT `subject_id`, `hadm_id`, `stay_id`, `charttime`, `itemid`, `valuenum`
+## FROM (SELECT * FROM (SELECT * FROM `chartevents` AS `LHS`
+## WHERE EXISTS (
+##   SELECT 1 FROM (SELECT `LHS`.`subject_id` AS `subject_id`, `LHS`.`intime` AS `intime`, `hadm_id`, `stay_id`, `first_careunit`, `last_careunit`, `outtime`, `los`
+## FROM (SELECT `subject_id`, MIN(`intime`) AS `intime`
+## FROM (SELECT `subject_id`, `intime`
+## FROM `icustays`) `q01`
+## GROUP BY `subject_id`) `LHS`
+## LEFT JOIN `icustays` AS `RHS`
+## ON (`LHS`.`subject_id` = `RHS`.`subject_id` AND `LHS`.`intime` = `RHS`.`intime`)
+## ) `RHS`
+##   WHERE (`LHS`.`subject_id` = `RHS`.`subject_id`)
+## )) `LHS`
+## WHERE EXISTS (
+##   SELECT 1 FROM (SELECT *
+## FROM `d_items`
+## WHERE (`itemid` IN (220045.0, 220181.0, 220179.0, 223761.0, 220210.0))) `RHS`
+##   WHERE (`LHS`.`itemid` = `RHS`.`itemid`)
+## )) `q01`) `RHS`
+## ON (`LHS`.`subject_id` = `RHS`.`subject_id` AND `LHS`.`itemid` = `RHS`.`itemid` AND `LHS`.`charttime` = `RHS`.`charttime`)
 ## ) `q02`) `q03`
 ## GROUP BY `subject_id`, `hadm_id`, `stay_id`) `q04`
 ## # Source:   lazy query [?? x 8]
 ## # Database: BigQueryConnection
 ##    subject_id  hadm_id  stay_id meanbp resp_rate heartrate  temp   sbp
 ##         &lt;int&gt;    &lt;int&gt;    &lt;int&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1   19201291 25546590 39710961     83        17        65  NA     119
-##  2   13884765 28054998 33378329     NA        24        97  98.3    NA
-##  3   14561512 28608898 31564854     95        NA        62  NA     149
-##  4   16307072 26772810 35684453     NA        14        68  NA      NA
-##  5   13694866 20393776 31194638     NA        18        86  96.8    NA
-##  6   10173928 24275300 30029764     NA        17        96  98.8    NA
-##  7   16452426 25878557 32968886     NA        16        64  NA      NA
-##  8   17100212 23495295 32559836     73        NA        NA  NA      92
-##  9   16108202 21924047 31188088     NA        NA        NA  97.9    NA
-## 10   15341255 29962466 30231678     NA        14        80  NA      NA
+##  1   11088819 29580979 31647927    114        19        91  98.4   157
+##  2   17318133 26409791 39234579    100        11        78  98.6   139
+##  3   10100976 23899178 39269772     85        12        73  98.4   132
+##  4   10604741 24744108 33308787     87        21       108  95.6   130
+##  5   17315288 25654319 35864474    110        17        93  98.2   150
+##  6   15185171 24966380 30869091     80        11        83  98.4   124
+##  7   10292195 24824855 34753905     86        18        81  98.4   123
+##  8   15211380 20724962 37167199    121         9        95  98.9   156
+##  9   16981876 25353715 39688886     77        20        96  98.7   110
+## 10   19204641 20018314 34405373    112        21       113  98.7   161
 ## # … with more rows</code></pre>
 <ol start="8" style="list-style-type: decimal">
 <li>Put things together. This step is similar to Q7 of HW2. Using one chain of pipes <code>%&gt;%</code> to perform following data wrangling steps: (i) start with the <code>icustays_tble</code> for the first ICU stay of each unique patient, (ii) merge in admissions and patients tables, (iii) keep adults only (age at admission &gt;= 18), (iv) merge in the labevents and chartevents tables, (v) create an indicator for 30-day mortality, (vi) save the final tibble to an <code>icu_cohort.rds</code> R data file in the <code>mimiciv_shiny</code> folder.</li>

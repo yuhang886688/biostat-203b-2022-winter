@@ -103,33 +103,43 @@ patients_tble <- tbl(con, "patients") %>%
 6. Connect to the `labevents` table and retrieve a subset that only contain subjects who appear in `icustays_tble` and the lab items listed in HW2. 
 ```{r}
 # # TODO
-labevents_tble <- tbl(con, "labevents") %>% 
-  semi_join(icustays_tble, by = "subject_id") %>% 
+dlabitems_tble <- tbl(con, "d_labitems") %>%
   filter(itemid %in% c(50912, 50971, 50983, 50902, 50882, 
                        51221, 51301, 50931, 50960, 50893)) %>%
+  show_query() %>%
+  print(width = Inf)
+
+labevents_tble <- tbl(con, "labevents") %>% 
   select(subject_id, itemid, charttime, valuenum) %>%
+  semi_join(icustays_tble, by = "subject_id") %>% 
+  semi_join(dlabitems_tble, by="itemid") %>%
   show_query() %>%
   print(width = Inf)
 ```
 Only keep the first lab measurements during ICU stay and pivot lab items to become variables/columns.
 ```{r}
 # # TODO
-labevents_tble <- labevents_tble %>%
-  left_join(icustays_tble, by = c("subject_id")) %>% 
-  filter(charttime >= intime) %>%
-  select(subject_id, charttime) %>%
-  group_by(subject_id) %>% 
-	summarise_all(min) %>%
-  left_join(labevents_tble, by = c("subject_id", "charttime")) %>% 
-  select(-charttime) %>% 
+labevents_tble <- labevents_tble %>% 
+  left_join(select(icustays_tble, subject_id, intime, outtime),
+            by = "subject_id") %>% 
+  filter(charttime >= intime & charttime <= outtime) %>%
+  select(subject_id, itemid, charttime) %>%
+  group_by(subject_id, itemid) %>% 
+ summarise_all(min) %>%
+  left_join(labevents_tble, by = c("subject_id", "itemid", "charttime")) %>% 
+  select(subject_id, itemid, valuenum) %>% 
   ungroup() %>% 
-  pivot_wider(names_from = itemid, names_prefix = "itemid_",
-              values_from = valuenum) %>%
-  rename(calcium = "itemid_50893", magnesium = "itemid_50960",
-         potassium = "itemid_50971", chloride = "itemid_50902",
-         sodium = "itemid_50983", creatinine = "itemid_50912",
-         bicarbonate = "itemid_50882", glucose = "itemid_50931",
-         hematocrit = "itemid_51221", wbc = "itemid_51301") %>%
+  pivot_wider(names_from = itemid, values_from = valuenum) %>%
+  rename(creatinine = '50912', 
+         potassium = '50971', 
+         sodium = '50983',
+         chloride = '50902',
+         bicarbonate = '50882', 
+         hematocrit = '51221',
+         wbc = '51301', 
+         glucose = '50931', 
+         magnesium = '50960', 
+         calcium = '50893') %>%
   show_query() %>%
   print(width = Inf)
 ```
@@ -137,9 +147,14 @@ labevents_tble <- labevents_tble %>%
 7. Connect to `chartevents` table and retrieve a subset that only contain subjects who appear in `icustays_tble` and the chart events listed in HW2.
 ```{r}
 # # TODO
+ditems_tble <- tbl(con, "d_items") %>%
+  filter(itemid %in% c(220045, 220181, 220179, 223761, 220210)) %>%
+  show_query() %>%
+  print(width = Inf)
+
 chartevents_tble <- tbl(con, "chartevents") %>%
   semi_join(icustays_tble, by = "subject_id") %>% 
-  filter(itemid %in% c(220045, 220181, 220179, 223761, 220210)) %>%
+  semi_join(ditems_tble, by = "itemid") %>%
   select(subject_id, hadm_id, stay_id, charttime, itemid, valuenum) %>%
   show_query() %>%
   print(width = Inf)
@@ -148,21 +163,21 @@ Only keep the first chart events during ICU stay and pivot chart events to becom
 ```{r}
 # # TODO
 chartevents_tble <- chartevents_tble %>%
-  left_join(icustays_tble, by = c("subject_id")) %>%
-  filter(charttime >= intime) %>% 
-  select(subject_id, charttime) %>%
-  group_by(subject_id) %>% 
-	summarise_all(min) %>% 
-  left_join(chartevents_tble, by = c("subject_id", "charttime")) %>% 
-  select(-charttime) %>% 
+  left_join(select(icustays_tble, subject_id, intime, outtime),
+            by = "subject_id") %>% 
+  filter(charttime >= intime & charttime <= outtime) %>%
+  select(subject_id, itemid, charttime) %>%
+  group_by(subject_id, itemid) %>% 
+ summarise_all(min) %>%
+  left_join(chartevents_tble, by = c("subject_id", "itemid", "charttime")) %>% 
+  select(subject_id, hadm_id, stay_id, itemid, valuenum) %>% 
   ungroup() %>% 
-  pivot_wider(names_from = itemid, names_prefix = "itemid_",
-              values_from = valuenum) %>% 
-  rename(meanbp = 'itemid_220181', 
-         sbp = 'itemid_220179', 
-         temp = 'itemid_223761', 
-         resp_rate= 'itemid_220210',
-         heartrate = 'itemid_220045') %>%
+  pivot_wider(names_from = itemid, values_from = valuenum) %>% 
+  rename(heartrate = '220045',
+         meanbp = '220181', 
+         sbp = '220179', 
+         temp = '223761', 
+         resp_rate = '220210') %>%
   show_query() %>%
   print(width = Inf)
 ```
