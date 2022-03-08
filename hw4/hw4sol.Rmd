@@ -50,18 +50,54 @@ Through the Shiny app developed in HW3, we observe abundant missing values in th
 3. Perform a data quality check of the ICU stays data. Discard variables with substantial missingness, say >5000 `NA`s. Replace apparent data entry errors by `NA`s.
 
 ```{r}
+library(tidyverse)
+
 # Load the dataset
-icu_cohort <- readRDS("../hw3/mimiciv_shiny/icu_cohort.rds")
-summary(icu_cohort)
+icu_cohort <- readRDS("../hw3/mimiciv_shiny/icu_cohort.rds") %>%
+  print(width = Inf)
+
+# Discard variables with >5000 NAs
+icu_cohort_clean <- icu_cohort[, which(colSums(is.na(icu_cohort)) <= 5000)] %>%
+  print(width = Inf)
+
+# Replace outliers with NAs (outside of fences considered as outliers)
+lab_vital_vars <- c("calcium", "magnesium", "potassium", "chloride",
+                    "sodium", "creatinine", "bicarbonate", "glucose",
+                    "hematocrit", "wbc", "meanbp", "sbp", "temp", 
+                    "resp_rate", "heartrate")
+
+outlier_replace <- function(x){
+  if (is.numeric(x)){
+    p25 <- quantile(x, probs = c(.25), na.rm=T)
+    p75 <- quantile(x, probs = c(.75), na.rm=T)
+    IQR <- p75 - p25
+    x <- ifelse(x > p75 + 1.5 * IQR | x < p25 - 1.5 * IQR , NA, x)
+  }
+}
+
+lab_vital <- select(icu_cohort_clean, all_of(lab_vital_vars))
+lab_vital <- apply(lab_vital, 2, outlier_replace)
+icu_cohort_clean[, colnames(lab_vital)] <- lab_vital
+
 ```
 
 
 
 4. Impute missing values by `miceRanger` (request $m=3$ data sets). This step is computational intensive. Make sure to save the imputation results as a file. Hint: Setting `max.depth=10` in the `miceRanger` function may cut some computing time.
 
+```{r}
+library(miceRanger)
+
+```
+
 5. Make imputation diagnostic plots and explain what they mean.
 
+
+
+
 6. Choose one of the imputed data sets to be used in Q2. This is **not** a good idea to use just one imputed data set or to average multiple imputed data sets. Explain in a couple of sentences what the correct Multiple Imputation strategy is.
+
+
 
 ## Q2. Predicting 30-day mortality
 
