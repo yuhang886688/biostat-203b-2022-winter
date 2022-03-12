@@ -88,14 +88,56 @@ icu_cohort_clean[, colnames(lab_vital)] <- lab_vital
 ```{r}
 library(miceRanger)
 
+system.time(icu_cohort_mice <- miceRanger(
+  icu_cohort_clean, m = 3, 
+  maxiter = 10,
+  returnModels = FALSE,
+  verbose = FALSE,
+  max.depth = 10
+  ))
 ```
 
 5. Make imputation diagnostic plots and explain what they mean.
 
+```{r}
+# Distribution of Imputed Values 
+# For continuous variables, all lab or vital variables have missing values
+# For categorical variables, discharge location and marital status have missing values
+cat_vars <- c("discharge_location", "marital_status")
+plotDistributions(icu_cohort_mice, vars = lab_vital_vars)
+plotDistributions(icu_cohort_mice, vars = cat_vars)
+```
+***Each plot in the panel shows the imputed distributions compared to the original distribution for each lab or vital variable. The red line is the density of the original, nonmissing data. The smaller, black lines are the density of the imputed values in each of the datasets. For continuous lab or vital variables, we can see that most of the distributions of imputed data (black) approximately match the distributions of the original nonmissing data (red), which indicates that the data missing mechanism is Missing Completely at Random (MCAR); for categorical variabels, the black dots approximately match the grey bars, though there are slight differences.***
 
+```{r}
+# Convergence of Correlation
+plotCorrelations(icu_cohort_mice, vars = lab_vital_vars)
+plotCorrelations(icu_cohort_mice, vars = cat_vars)
+# Center and Dispersion Convergence
+plotVarConvergence(icu_cohort_mice, vars = lab_vital_vars)
+plotVarConvergence(icu_cohort_mice, vars = cat_vars)
+```
+***We observe convergence patterns of correlation over the iterations for some variables (e.g. calcium, creatinine) but not very obvious for some other variables. For the Center and Dispersion Convergence plots, most variables converged over the iterations but we still see some increasing or decreasing patterns (e.g. meanbp, sbp), and probably more iterations are needed (though this would increase the running time).***
 
 
 6. Choose one of the imputed data sets to be used in Q2. This is **not** a good idea to use just one imputed data set or to average multiple imputed data sets. Explain in a couple of sentences what the correct Multiple Imputation strategy is.
+
+```{r}
+# Return the imputed data
+icu_mice_datalist <- completeData(icu_cohort_mice)
+icu_data1 <- as.data.frame(icu_mice_datalist[1])
+colnames(icu_data1) <- colnames(icu_cohort_clean)
+icu_data2 <- as.data.frame(icu_mice_datalist[2])
+colnames(icu_data2) <- colnames(icu_cohort_clean)
+icu_data3 <- as.data.frame(icu_mice_datalist[3])
+colnames(icu_data3) <- colnames(icu_cohort_clean)
+
+# In question2, I would use the 1st imputed dataset
+# And I would save it in the hw4 folder
+icu_data1 %>% saveRDS(paste0("/home/yuhang886688/biostat-203b-2022-winter", 
+                             "/hw4/icu_imputed.rds"))
+```
+***The correct Imputation strategy is to run the models in each dataset, combine the results, and ensure the variance across imputation is the least.***
 
 
 
@@ -105,7 +147,27 @@ Develop at least two analytic approaches for predicting the 30-day mortality of 
 
 1. Partition data into 80% training set and 20% test set. Stratify partitioning according the 30-day mortality status.
 
+```{r}
+icu_imputed <- readRDS(paste0("/home/yuhang886688/biostat-203b-2022-winter", 
+                              "/hw4/icu_imputed.rds"))
+
+```
+
 2. Train the models using the training set.
+
+```{r}
+# Method1: logistic regression
+
+
+
+# Method2: Lasso
+
+
+```
 
 3. Compare model prediction performance on the test set.
 
+```{r}
+
+
+```
