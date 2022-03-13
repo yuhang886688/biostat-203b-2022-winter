@@ -150,7 +150,25 @@ Develop at least two analytic approaches for predicting the 30-day mortality of 
 ```{r}
 icu_imputed <- readRDS(paste0("/home/yuhang886688/biostat-203b-2022-winter", 
                               "/hw4/icu_imputed.rds"))
+# Stratify by the 30-day mortality status
+icu_imputed_30die <- icu_imputed %>% filter(thirty_day_mort == 1)
+icu_imputed_nodie <- icu_imputed %>% filter(thirty_day_mort == 0)
 
+# For people who die within 30 days
+sample_30die <- sample(1:nrow(icu_imputed_30die), 
+                       size = 0.8*nrow(icu_imputed_30die))
+training_30die <- icu_imputed_30die[sample_30die, ]
+test_30die <- icu_imputed_30die[-sample_30die, ]
+
+# For people who do not die within 30 days
+sample_nodie <- sample(1:nrow(icu_imputed_nodie), 
+                       size=0.8*nrow(icu_imputed_nodie))
+training_nodie <- icu_imputed_nodie[sample_nodie, ]
+test_nodie <- icu_imputed_nodie[-sample_nodie, ]
+
+# Combine the training and test data
+training_set <- rbind(training_30die, training_nodie)
+test_set <- rbind(test_30die, test_nodie)
 ```
 
 2. Train the models using the training set.
@@ -159,8 +177,8 @@ icu_imputed <- readRDS(paste0("/home/yuhang886688/biostat-203b-2022-winter",
 # Method1: logistic regression
 
 
-
 # Method2: Lasso
+library(glmnet)
 
 
 ```
@@ -168,6 +186,10 @@ icu_imputed <- readRDS(paste0("/home/yuhang886688/biostat-203b-2022-winter",
 3. Compare model prediction performance on the test set.
 
 ```{r}
+# Predictive accuracy for logistic regression
+
+
+# Predictive accuracy for logistic regression with lasso penalty
 
 
 ```
