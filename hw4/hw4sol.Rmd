@@ -137,7 +137,7 @@ colnames(icu_data3) <- colnames(icu_cohort_clean)
 icu_data1 %>% saveRDS(paste0("/home/yuhang886688/biostat-203b-2022-winter", 
                              "/hw4/icu_imputed.rds"))
 ```
-***The correct Imputation strategy is to run the models in each dataset, combine the results, and ensure the variance across imputation is the least.***
+***The correct Imputation strategy is to run the models in each imputed dataset and then combine or average the results, and get the appropriate standard error (combination of average variance within imputations and variance across imputation).***
 
 
 
@@ -175,21 +175,59 @@ test_set <- rbind(test_30die, test_nodie)
 
 ```{r}
 # Method1: logistic regression
+training_set2 <- training_set %>%
+  select("gender", "age_hadm", "marital_status", 
+         "ethnicity", all_of(lab_vital_vars), "thirty_day_mort") %>%
+  mutate_if(is.character, as.factor)
+  
+logistic_model <- glm(as.factor(thirty_day_mort) ~ ., data = training_set2, 
+                      family = binomial (link = "logit"))
+summary(logistic_model)
 
 
 # Method2: Lasso
 library(glmnet)
-
-
+x <- model.matrix(thirty_day_mort ~ ., training_set2)[, -1]
+y <- training_set2$thirty_day_mort
+# find the optimal lambda value
+cv_model <- cv.glmnet(x, y, alpha = 1, family = "binomial")
+best_lambda <- cv_model$lambda.min
+best_lambda
+plot(cv_model)
+# find the coefficients of the best lasso model
+lasso_model <- glmnet(x, y, alpha = 1, lambda = best_lambda)
+coef(lasso_model)
 ```
 
 3. Compare model prediction performance on the test set.
 
 ```{r}
-# Predictive accuracy for logistic regression
+### Predictive accuracy for logistic regression
 
+# Calculate the accuracy for the logistic model
+test_set2 <- test_set %>%
+  select("gender", "age_hadm", "marital_status", 
+         "ethnicity", all_of(lab_vital_vars), "thirty_day_mort") %>%
+  mutate_if(is.character, as.factor) 
+p_logistic <- predict(logistic_model, test_set2, type = "response")
+predict_logistic <- ifelse(p_logistic > 0.5, 1, 0)
+mean(predict_logistic == test_set2$thirty_day_mort)
 
-# Predictive accuracy for logistic regression with lasso penalty
+# Calculate the AUC for the logistic model
+library(pROC)
+auc(test_set2$thirty_day_mort, p_logistic)
 
+### Predictive accuracy for logistic regression with lasso penalty
+
+# Calculate the accuracy for the lasso model
+x_test_lasso <- model.matrix(thirty_day_mort ~ ., test_set2)[, -1]
+p_lasso <- predict(lasso_model, s = best_lambda, newx = x_test_lasso)
+predict_lasso <- ifelse(p_lasso > 0.5, 1, 0)
+mean(predict_lasso == test_set2$thirty_day_mort)
+
+# Calculate the AUC for the lasso model
+auc(test_set2$thirty_day_mort, c(p_lasso))
 
 ```
+
+***In summary, the two methods have similar accuracy and area under the curve (AUC), and I think both are OK for missing data imputation. However, here we are only using one imputed dataset, which is not a good idea. We should further impute in each sub-datasets and combine the results.***
