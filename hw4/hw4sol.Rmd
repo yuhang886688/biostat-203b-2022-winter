@@ -107,6 +107,8 @@ cat_vars <- c("discharge_location", "marital_status")
 plotDistributions(icu_cohort_mice, vars = lab_vital_vars)
 plotDistributions(icu_cohort_mice, vars = cat_vars)
 ```
+
+
 ***Each plot in the panel shows the imputed distributions compared to the original distribution for each lab or vital variable. The red line is the density of the original, nonmissing data. The smaller, black lines are the density of the imputed values in each of the datasets. For continuous lab or vital variables, we can see that most of the distributions of imputed data (black) approximately match the distributions of the original nonmissing data (red), which indicates that the data missing mechanism is Missing Completely at Random (MCAR); for categorical variabels, the black dots approximately match the grey bars, though there are slight differences.***
 
 ```{r}
@@ -117,6 +119,8 @@ plotCorrelations(icu_cohort_mice, vars = cat_vars)
 plotVarConvergence(icu_cohort_mice, vars = lab_vital_vars)
 plotVarConvergence(icu_cohort_mice, vars = cat_vars)
 ```
+
+
 ***We observe convergence patterns of correlation over the iterations for some variables (e.g. calcium, creatinine) but not very obvious for some other variables. For the Center and Dispersion Convergence plots, most variables converged over the iterations but we still see some increasing or decreasing patterns (e.g. meanbp, sbp), and probably more iterations are needed (though this would increase the running time).***
 
 
