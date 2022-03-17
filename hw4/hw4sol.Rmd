@@ -199,7 +199,8 @@ best_lambda <- cv_model$lambda.min
 best_lambda
 plot(cv_model)
 # find the coefficients of the best lasso model
-lasso_model <- glmnet(x, y, alpha = 1, lambda = best_lambda)
+lasso_model <- glmnet(x, y, alpha = 1, 
+                      lambda = best_lambda, family = "binomial")
 coef(lasso_model)
 ```
 
