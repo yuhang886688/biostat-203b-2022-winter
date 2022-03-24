@@ -1,0 +1,238 @@
+---
+title: "Biostat 203B Homework 4"
+subtitle: Due Mar 18 @ 11:59PM
+author: Yuhang Qian
+output:
+  # ioslides_presentation: default
+  html_document:
+    toc: true
+    toc_depth: 4
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+```
+
+Display machine information:
+```{r}
+sessionInfo()
+```
+Load database libraries and the tidyverse frontend:
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(lubridate))
+suppressPackageStartupMessages(library(miceRanger))
+```
+
+## Q1. Missing data
+
+Through the Shiny app developed in HW3, we observe abundant missing values in the MIMIC-IV ICU cohort we created. In this question, we use multiple imputation to obtain a data set without missing values.
+
+0. Read following tutorials on the R package miceRanger for imputation: <https://github.com/farrellday/miceRanger>, <https://cran.r-project.org/web/packages/miceRanger/vignettes/miceAlgorithm.html>.
+
+    A more thorough book treatment of the practical imputation strategies is the book [*_Flexible Imputation of Missing Data_*](https://stefvanbuuren.name/fimd/) by Stef van Buuren. 
+
+1. Explain the jargon MCAR, MAR, and MNAR.
+
+***MCAR, missing completely at random, the missing data are unrelated to the study variables: thus, the participants with completely observed data are in effect a random sample of all the participants assigned a particular intervention.***
+
+***MAR, missing at random, whether or not data are missing may depend on the values of the observed study variables. However, after conditioning on this information, whether or not data are missing does not depend on the values of the missing data.***
+
+***MNAR, missing not at random, whether or not data are missing depends on the values of the missing data.***
+
+
+2. Explain in a couple of sentences how the Multiple Imputation by Chained Equations (MICE) work.
+
+***MICE is a multiple imputation method used to replace missing data values in a data set under certain assumptions about the data missingness mechanism (e.g. MAR). Consider an imputation strategy that moves from variable to variable, treating each as a separate missing data problem: Specify a prediction equation of an appropriate form (e.g. linear, binary, etc) for each variable in turn; Randomly draw from the conditional distribution specified by the regression model; Replace previously imputed values with new draws; Iterate for a predetermined number of cycles.***
+
+
+
+3. Perform a data quality check of the ICU stays data. Discard variables with substantial missingness, say >5000 `NA`s. Replace apparent data entry errors by `NA`s.
+
+```{r}
+library(tidyverse)
+
+# Load the dataset
+icu_cohort <- readRDS("../hw3/mimiciv_shiny/icu_cohort.rds") %>%
+  print(width = Inf)
+
+# Discard variables with >5000 NAs
+icu_cohort_clean <- icu_cohort[, which(colSums(is.na(icu_cohort)) <= 5000)] %>%
+  print(width = Inf)
+
+# Replace outliers with NAs (outside of fences considered as outliers)
+lab_vital_vars <- c("calcium", "magnesium", "potassium", "chloride",
+                    "sodium", "creatinine", "bicarbonate", "glucose",
+                    "hematocrit", "wbc", "meanbp", "sbp", "temp", 
+                    "resp_rate", "heartrate")
+
+outlier_replace <- function(x){
+  if (is.numeric(x)){
+    p25 <- quantile(x, probs = c(.25), na.rm=T)
+    p75 <- quantile(x, probs = c(.75), na.rm=T)
+    IQR <- p75 - p25
+    x <- ifelse(x > p75 + 1.5 * IQR | x < p25 - 1.5 * IQR , NA, x)
+  }
+}
+
+lab_vital <- select(icu_cohort_clean, all_of(lab_vital_vars))
+lab_vital <- apply(lab_vital, 2, outlier_replace)
+icu_cohort_clean[, colnames(lab_vital)] <- lab_vital
+
+```
+
+
+
+4. Impute missing values by `miceRanger` (request $m=3$ data sets). This step is computational intensive. Make sure to save the imputation results as a file. Hint: Setting `max.depth=10` in the `miceRanger` function may cut some computing time.
+
+```{r}
+library(miceRanger)
+
+system.time(icu_cohort_mice <- miceRanger(
+  icu_cohort_clean, m = 3, 
+  maxiter = 10,
+  returnModels = FALSE,
+  verbose = FALSE,
+  max.depth = 10
+  ))
+```
+
+5. Make imputation diagnostic plots and explain what they mean.
+
+```{r}
+# Distribution of Imputed Values 
+# For continuous variables, all lab or vital variables have missing values
+# For categorical variables, discharge location and marital status have missing values
+cat_vars <- c("discharge_location", "marital_status")
+plotDistributions(icu_cohort_mice, vars = lab_vital_vars)
+plotDistributions(icu_cohort_mice, vars = cat_vars)
+```
+
+
+***Each plot in the panel shows the imputed distributions compared to the original distribution for each lab or vital variable. The red line is the density of the original, nonmissing data. The smaller, black lines are the density of the imputed values in each of the datasets. For continuous lab or vital variables, we can see that most of the distributions of imputed data (black) approximately match the distributions of the original nonmissing data (red), which indicates that the data missing mechanism is Missing Completely at Random (MCAR); for categorical variabels, the black dots approximately match the grey bars, though there are slight differences.***
+
+```{r}
+# Convergence of Correlation
+plotCorrelations(icu_cohort_mice, vars = lab_vital_vars)
+plotCorrelations(icu_cohort_mice, vars = cat_vars)
+# Center and Dispersion Convergence
+plotVarConvergence(icu_cohort_mice, vars = lab_vital_vars)
+plotVarConvergence(icu_cohort_mice, vars = cat_vars)
+```
+
+
+***We observe convergence patterns of correlation over the iterations for some variables (e.g. calcium, creatinine) but not very obvious for some other variables. For the Center and Dispersion Convergence plots, most variables converged over the iterations but we still see some increasing or decreasing patterns (e.g. meanbp, sbp), and probably more iterations are needed (though this would increase the running time).***
+
+
+6. Choose one of the imputed data sets to be used in Q2. This is **not** a good idea to use just one imputed data set or to average multiple imputed data sets. Explain in a couple of sentences what the correct Multiple Imputation strategy is.
+
+```{r}
+# Return the imputed data
+icu_mice_datalist <- completeData(icu_cohort_mice)
+icu_data1 <- as.data.frame(icu_mice_datalist[1])
+colnames(icu_data1) <- colnames(icu_cohort_clean)
+icu_data2 <- as.data.frame(icu_mice_datalist[2])
+colnames(icu_data2) <- colnames(icu_cohort_clean)
+icu_data3 <- as.data.frame(icu_mice_datalist[3])
+colnames(icu_data3) <- colnames(icu_cohort_clean)
+
+# In question2, I would use the 1st imputed dataset
+# And I would save it in the hw4 folder
+icu_data1 %>% saveRDS(paste0("/home/yuhang886688/biostat-203b-2022-winter", 
+                             "/hw4/icu_imputed.rds"))
+```
+***The correct Imputation strategy is to run the models in each imputed dataset and then combine or average the results, and get the appropriate standard error (combination of average variance within imputations and variance across imputation).***
+
+
+
+## Q2. Predicting 30-day mortality
+
+Develop at least two analytic approaches for predicting the 30-day mortality of patients admitted to ICU using demographic information (gender, age, marital status, ethnicity), first lab measurements during ICU stay, and first vital measurements during ICU stay. For example, you can use (1) logistic regression (`glm()` function in base R or keras), (2) logistic regression with lasso penalty (glmnet or keras package), (3) random forest (randomForest package), or (4) neural network (keras package).
+
+1. Partition data into 80% training set and 20% test set. Stratify partitioning according the 30-day mortality status.
+
+```{r}
+icu_imputed <- readRDS(paste0("/home/yuhang886688/biostat-203b-2022-winter", 
+                              "/hw4/icu_imputed.rds"))
+# Stratify by the 30-day mortality status
+icu_imputed_30die <- icu_imputed %>% filter(thirty_day_mort == 1)
+icu_imputed_nodie <- icu_imputed %>% filter(thirty_day_mort == 0)
+
+# For people who die within 30 days
+sample_30die <- sample(1:nrow(icu_imputed_30die), 
+                       size = 0.8*nrow(icu_imputed_30die))
+training_30die <- icu_imputed_30die[sample_30die, ]
+test_30die <- icu_imputed_30die[-sample_30die, ]
+
+# For people who do not die within 30 days
+sample_nodie <- sample(1:nrow(icu_imputed_nodie), 
+                       size=0.8*nrow(icu_imputed_nodie))
+training_nodie <- icu_imputed_nodie[sample_nodie, ]
+test_nodie <- icu_imputed_nodie[-sample_nodie, ]
+
+# Combine the training and test data
+training_set <- rbind(training_30die, training_nodie)
+test_set <- rbind(test_30die, test_nodie)
+```
+
+2. Train the models using the training set.
+
+```{r}
+# Method1: logistic regression
+training_set2 <- training_set %>%
+  select("gender", "age_hadm", "marital_status", 
+         "ethnicity", all_of(lab_vital_vars), "thirty_day_mort") %>%
+  mutate_if(is.character, as.factor)
+  
+logistic_model <- glm(as.factor(thirty_day_mort) ~ ., data = training_set2, 
+                      family = binomial (link = "logit"))
+summary(logistic_model)
+
+
+# Method2: Lasso
+library(glmnet)
+x <- model.matrix(thirty_day_mort ~ ., training_set2)[, -1]
+y <- training_set2$thirty_day_mort
+# find the optimal lambda value
+cv_model <- cv.glmnet(x, y, alpha = 1, family = "binomial")
+best_lambda <- cv_model$lambda.min
+best_lambda
+plot(cv_model)
+# find the coefficients of the best lasso model
+lasso_model <- glmnet(x, y, alpha = 1, 
+                      lambda = best_lambda, family = "binomial")
+coef(lasso_model)
+```
+
+3. Compare model prediction performance on the test set.
+
+```{r}
+### Predictive accuracy for logistic regression
+
+# Calculate the accuracy for the logistic model
+test_set2 <- test_set %>%
+  select("gender", "age_hadm", "marital_status", 
+         "ethnicity", all_of(lab_vital_vars), "thirty_day_mort") %>%
+  mutate_if(is.character, as.factor) 
+p_logistic <- predict(logistic_model, test_set2, type = "response")
+predict_logistic <- ifelse(p_logistic > 0.5, 1, 0)
+mean(predict_logistic == test_set2$thirty_day_mort)
+
+# Calculate the AUC for the logistic model
+library(pROC)
+auc(test_set2$thirty_day_mort, p_logistic)
+
+### Predictive accuracy for logistic regression with lasso penalty
+
+# Calculate the accuracy for the lasso model
+x_test_lasso <- model.matrix(thirty_day_mort ~ ., test_set2)[, -1]
+p_lasso <- predict(lasso_model, s = best_lambda, newx = x_test_lasso)
+predict_lasso <- ifelse(p_lasso > 0.5, 1, 0)
+mean(predict_lasso == test_set2$thirty_day_mort)
+
+# Calculate the AUC for the lasso model
+auc(test_set2$thirty_day_mort, c(p_lasso))
+
+```
+
+***In summary, the two methods have similar accuracy and area under the curve (AUC), and I think both are OK for missing data imputation. However, here we are only using one imputed dataset, which is not a good idea. We should further impute in each sub-datasets and combine the results.***
